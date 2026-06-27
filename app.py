@@ -90,7 +90,7 @@ with tab1:
     <div style='background-color: #F0F7FF; padding: 18px; border-radius: 10px; border-left: 6px solid #1E88E5;'>
         <b style='color: #1E88E5; font-size: 18px;'>💡 高級認證聽力破關公式：</b><br>
         <p style='color: #31333F; margin-top: 8px;'>
-            教材已與 10-5 雙辭典規範完成自動化同步審計 [cite: 30, 39]。請注意 VSO 結構中的動詞詞綴變化 [cite: 38, 40]。阿美語轉出的 Markdown 內文若含有 HTML 樣式代碼，系統已開啟 <b>unsafe_allow_html=True</b> 完成無損解碼支援。
+            高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。
         </p>
     </div>
     """, unsafe_allow_html=True)

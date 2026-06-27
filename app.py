@@ -29,14 +29,14 @@ with st.spinner("🔄 正在實時安全同步 Google Drive 教材..."):
     lecture_content = get_amis_drive_content(WEEK01_NOTE_ID)
 
 # --- 前端視覺渲染層 ---
-st.title("🎓 阿美語高級認證班：雲端自適應系統")
-st.caption("同步狀態：已即時鏈結 Google Drive 高級認證資料庫")
+st.title("🎓 阿美語高級認證班")
+st.caption(" ")
 st.divider()
 
-tab1, tab2 = st.tabs(["📖 當週雲端教材", "🎵 課堂完整複習音訊"])
+tab1, tab2 = st.tabs(["📖 當週線上教材", "🎵 課堂使用音訊"])
 
 with tab1:
-    st.header("📘 課文與語意結構解析")
+    st.header("📘 聽力/對話推論")
     
     # -----------------------------------------------------------------
     # 🧠 【動態文本防禦過濾機制：客製化標籤切片】

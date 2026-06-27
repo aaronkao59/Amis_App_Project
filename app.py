@@ -22,7 +22,7 @@ def get_amis_drive_content(file_id):
 
 # --- 📥 填入你的 Google Drive 檔案 ID ---
 # ⚠️ 請將下方的字串，替換成你實際在 Google Drive 複製出來的課文檔案 ID！
-WEEK01_NOTE_ID = "1A2B3C4D5E6F7G8H9I0J" 
+WEEK01_NOTE_ID = "1Fp0ySDFiWIud1ByQwMJW7oIJPmJ0nc9Z" 
 
 # --- 執行即時雲端同步 ---
 with st.spinner("🔄 正在實時安全同步 Google Drive 教材..."):

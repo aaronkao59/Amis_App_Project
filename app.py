@@ -37,19 +37,21 @@ WEEK_DRIVE_IDS = {
 
 # --- 前端視覺渲染層 ---
 st.title("🎓 阿美語高級認證班")
-# 🚀 核心修正：已將原本紅圈內的 st.caption 同步狀態文字整行移除
 st.divider()
 
 tab1, tab2 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"])
 
 with tab1:
-    # 部署週次選擇器
-    selected_week = st.selectbox(
-        "📂 請選擇複習週次：",
-        options=list(WEEK_DRIVE_IDS.keys()),
-        index=0
-    )
+    # 🚀 核心修正：將週次選擇器放入 st.expander 中，並設定 expanded=False 達成預設收合！
+    with st.expander("📅 選擇複習週次", expanded=False):
+        selected_week = st.selectbox(
+            "請選取你要複習的週次：",
+            options=list(WEEK_DRIVE_IDS.keys()),
+            index=0,
+            label_visibility="collapsed" # 隱藏內部小標題讓視覺更乾淨
+        )
     
+    # 預設維持選取的週次資料下載
     current_week_info = WEEK_DRIVE_IDS[selected_week]
     
     # 渲染週次主題
@@ -76,7 +78,7 @@ with tab1:
             is_match = (
                 re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
                 block.strip() == "【對話推論完整題組】" or 
-                block.strip() == "【附加題微問答】"
+                block.strip() == "【附加題組問答】"
             )
             
             if is_match:
@@ -103,7 +105,7 @@ with tab1:
     <div style='background-color: #F0F7FF; padding: 18px; border-radius: 10px; border-left: 6px solid #1E88E5;'>
         <b style='color: #1E88E5; font-size: 18px;'>💡 高級認證聽力破關公式：</b><br>
         <p style='color: #31333F; margin-top: 8px;'>
-            高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。
+            高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境}」的瞬間反射辨識。
         </p>
     </div>
     """, unsafe_allow_html=True)

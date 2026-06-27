@@ -63,7 +63,7 @@ with tab1:
             
             if is_match:
                 # 發現目標標題，立刻在前端部署獨立的摺疊按鈕開關 (預設為收起關閉 expanded=False) 
-                current_expander = st.expander(f"Toggle 🔓 {block.strip()} 顯示/隱藏內容", expanded=False)
+                current_expander = st.expander(f" {block.strip()} 顯示/隱藏", expanded=False)
             else:
                 # 如果前一個區塊是按鈕標題，將接下來的族語、翻譯與互動元件全部安全包裹於盒內 [cite: 4]
                 if current_expander:
@@ -85,7 +85,7 @@ with tab1:
         st.markdown(lecture_content, unsafe_allow_html=True)
     
     st.divider()
-    st.markdown("### 🎯 老師重點大補帖")
+    st.markdown("### 🎯 記事")
     st.markdown("""
     <div style='background-color: #F0F7FF; padding: 18px; border-radius: 10px; border-left: 6px solid #1E88E5;'>
         <b style='color: #1E88E5; font-size: 18px;'>💡 高級認證聽力破關公式：</b><br>

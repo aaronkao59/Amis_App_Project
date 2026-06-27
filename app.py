@@ -22,12 +22,11 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材 ID 對照表 (動態擴充戰術防線) ---
-# 未來您有第二週、第三週的教材時，直接把 Google Drive 的 File ID 補在下方即可！
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" # 第一週完整音訊
+        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
@@ -38,23 +37,22 @@ WEEK_DRIVE_IDS = {
 
 # --- 前端視覺渲染層 ---
 st.title("🎓 阿美語高級認證班")
-st.caption("同步狀態：已即時鏈結 Google Drive 高級認證自適應資料庫")
+# 🚀 核心修正：已將原本紅圈內的 st.caption 同步狀態文字整行移除
 st.divider()
 
 tab1, tab2 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"])
 
 with tab1:
-    # 🚀 核心新增：部署週次選擇器，剝奪學生的搜尋摩擦力
+    # 部署週次選擇器
     selected_week = st.selectbox(
         "📂 請選擇複習週次：",
         options=list(WEEK_DRIVE_IDS.keys()),
         index=0
     )
     
-    # 根據選取的週次，動態抓取對應的週次主題名稱與 File ID
     current_week_info = WEEK_DRIVE_IDS[selected_week]
     
-    # 渲染週次主題 (例如：📘 聽力/對話推論)
+    # 渲染週次主題
     st.header(f"📘 {current_week_info['title']}")
     
     # --- 執行即時雲端同步 ---
@@ -78,7 +76,7 @@ with tab1:
             is_match = (
                 re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
                 block.strip() == "【對話推論完整題組】" or 
-                block.strip() == "【附加題組問答】"
+                block.strip() == "【附加題微問答】"
             )
             
             if is_match:
@@ -93,7 +91,7 @@ with tab1:
                             st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", format="audio/mp3")
                             st.radio("📝 根據上方對話，選出最符合高級認證語境的推論選項：", 
                                      ["A. 邀請集體捕魚 (Mifaca' 互助擴充)", "B. 拒絕長輩調度", "C. 純粹寒暄"], 
-                                     key=f"radio_{selected_week}_{block_counter}") # 加入週次 key 防止衝突
+                                     key=f"radio_{selected_week}_{block_counter}")
                 else:
                     st.markdown(block, unsafe_allow_html=True)
     else:
@@ -111,7 +109,6 @@ with tab1:
     """, unsafe_allow_html=True)
 
 with tab2:
-    # 音訊分頁同樣與下拉選單動態對齊
     st.header(f"🎧 課堂串流音訊同步 ({selected_week})")
     st.write("請聆聽來自雲端硬碟的語音素材：")
     st.audio(current_week_info["audio_url"], format="audio/mp3")

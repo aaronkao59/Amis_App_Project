@@ -33,7 +33,7 @@ st.title("🎓 阿美語高級認證班")
 st.caption(" ")
 st.divider()
 
-tab1, tab2 = st.tabs(["📖 當週線上教材", "🎵 課堂使用音訊"])
+tab1, tab2 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"])
 
 with tab1:
     st.header("📘 聽力/對話推論")

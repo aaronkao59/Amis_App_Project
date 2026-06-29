@@ -42,7 +42,7 @@ st.divider()
 tab1, tab2 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"])
 
 with tab1:
-    # 🚀 核心修正：在清單最前方加入「--- 請選擇週次 ---」作為預設空狀態
+    # 在清單最前方加入「--- 請選擇週次 ---」作為預設空狀態
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week = st.selectbox(
             "請選取你要複習的週次：",
@@ -51,12 +51,11 @@ with tab1:
             label_visibility="collapsed"
         )
     
-    # 🧠 防線攔截：如果學生維持預設的「--- 請選擇週次 ---」，下方內容一律「封鎖、不顯示」！
+    # 防線攔截：如果學生維持預設的「--- 請選擇週次 ---」，下方內容一律隱藏
     if selected_week == "--- 請選擇週次 ---":
         st.write(" ") 
         st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
     else:
-        # 當學生真的手動選了「第一週」或「第二週」，以下內容才會動態解放跑出來！
         current_week_info = WEEK_DRIVE_IDS[selected_week]
         
         # 渲染週次主題
@@ -74,7 +73,6 @@ with tab1:
             blocks = re.split(pattern, lecture_content)
             
             current_expander = None
-            block_counter = 0 
             
             for block in blocks:
                 if not block.strip():
@@ -91,14 +89,9 @@ with tab1:
                 else:
                     if current_expander:
                         with current_expander:
+                            # 🚀 核心修正：將原本寫死的隨機音檔、radio 選擇題邏輯完全撤除！
+                            # 這裡百分之百只呈現您 Google Drive 內 .md 檔撰寫的真實文字內容。
                             st.markdown(block, unsafe_allow_html=True)
-                            
-                            block_counter += 1
-                            if "Kacaw" in block or "mifoting" in block:
-                                st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", format="audio/mp3")
-                                st.radio("📝 根據上方對話，選出最符合高級認證語境的推論選項：", 
-                                         ["A. 邀請集體捕魚 (Mifaca' 互助擴充)", "B. 拒絕長輩調度", "C. 純粹寒暄"], 
-                                         key=f"radio_{selected_week}_{block_counter}")
                     else:
                         st.markdown(block, unsafe_allow_html=True)
         else:
@@ -116,7 +109,6 @@ with tab1:
         """, unsafe_allow_html=True)
 
 with tab2:
-    # 音訊頁面同步做防線攔截
     if selected_week == "--- 請選擇週次 ---":
         st.info("🎧 請先至「每週線上教材」選取週次以同步音訊。")
     else:

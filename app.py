@@ -110,7 +110,7 @@ with tab1:
 
 with tab2:
     if selected_week == "--- 請選擇週次 ---":
-        st.info("🎧 請先至「每週線上教材」選取週次以同步音訊。")
+        st.info("🎧 暫不提供「每週線上課程」教材音訊。")
     else:
         st.header(f"🎧 課堂串流音訊同步 ({selected_week})")
         st.write("請聆聽來自雲端硬碟的語音素材：")

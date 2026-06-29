@@ -137,7 +137,7 @@ with tab3:
         <div style='background-color: #FFF9E6; padding: 15px; border-radius: 8px; border-left: 5px solid #FFA000; margin-top: 20px;'>
             <span style='color: #FFA000; font-weight: bold;'>📌 填寫說明：</span><br>
             <p style='color: #31333F; margin-top: 5px;'>
-                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的族語語法對齊解析。
+                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的族語語法解析。
             </p>
         </div>
         """, unsafe_allow_html=True)

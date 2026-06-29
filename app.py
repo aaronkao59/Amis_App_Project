@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import re
 
-# --- 頁面系統設定 (UIUX-CRF v9.0 憲法對齊) ---
+# --- 頁面系統設定 ---
 st.set_page_config(
     page_title="阿美語高級認證班 | 雲端衝刺系統",
     page_icon="🎓",
@@ -21,7 +21,7 @@ def get_amis_drive_content(file_id):
     except Exception as e:
         return f"🚨 發生錯誤：{str(e)}"
 
-# --- 🗺️ 雲端硬碟每週教材與表單對照表 (動態擴充戰術防線) ---
+# --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
@@ -37,42 +37,37 @@ WEEK_DRIVE_IDS = {
     }
 }
 
-# --- 🧠 初始化全域週次選擇狀態 (防止跨分頁錯位) ---
-if "selected_week_state" not in st.session_state:
-    st.session_state.selected_week_state = "--- 請選擇週次 ---"
-
 # --- 前端視覺渲染層 ---
 st.title("🎓 阿美語高級認證班")
 st.divider()
 
-# 🚀 修正（一）：劃分三個分頁標籤，完美包覆您所有的教學單元
+# 🚀 修正（一）：劃分三個分頁標籤（每週教材、使用音訊、課後練習）
 tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊", "✍️ 課後練習"])
 
 # =================================================================
 # 📖 欄位一：每週線上教材
 # =================================================================
 with tab1:
-    # 🚀 修正（二）：【上下位置交換】藍色提示方塊置頂渲染（如圖一）
-    if st.session_state.selected_week_state == "--- 請選擇週次 ---":
-        st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
-    
-    # 選擇器按鈕緊跟在提示方塊下方
+    # 🚀 修正（二）：【位置上下交換】—— 收合按鈕擺在最上方！
     with st.expander("📅 選擇複習週次", expanded=False):
-        selected_week_t1 = st.selectbox(
+        selected_week = st.selectbox(
             "請選取你要複習的週次：",
             options=["--- 請選擇週次 ---"] + list(WEEK_DRIVE_IDS.keys()),
-            index=["--- 請選擇週次 ---", *WEEK_DRIVE_IDS.keys()].index(st.session_state.selected_week_state),
+            index=0,
             key="selector_t1",
             label_visibility="collapsed"
         )
-        st.session_state.selected_week_state = selected_week_t1
-
-    # 執行內容解鎖
-    if st.session_state.selected_week_state != "--- 請選擇週次 ---":
-        current_week_info = WEEK_DRIVE_IDS[st.session_state.selected_week_state]
+    
+    # 🚀 修正（三）：【位置上下交換】—— 藍色提示方塊乖乖出現在按鈕「下方」！
+    if selected_week == "--- 請選擇週次 ---":
+        st.write(" ")
+        st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
+    else:
+        # 當選取週次後，這裡才解鎖教材
+        current_week_info = WEEK_DRIVE_IDS[selected_week]
         st.header(f"📘 {current_week_info['title']}")
         
-        with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{st.session_state.selected_week_state}】教材..."):
+        with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
@@ -114,51 +109,51 @@ with tab1:
 # 🎵 欄位二：課堂使用音訊
 # =================================================================
 with tab2:
-    # 🚀 修正（三）：【上下位置交換】音訊分頁提示方塊置頂渲染（如圖二）
-    if st.session_state.selected_week_state == "--- 請選擇週次 ---":
-        st.info("🎧 暫不提供「每週線上課程」教材音訊。")
-        
+    # 🚀 修正（四）：【位置上下交換】—— 音訊分頁同樣是按鈕在上方！
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week_t2 = st.selectbox(
             "請選取你要複習的週次：",
             options=["--- 請選擇週次 ---"] + list(WEEK_DRIVE_IDS.keys()),
-            index=["--- 請選擇週次 ---", *WEEK_DRIVE_IDS.keys()].index(st.session_state.selected_week_state),
+            index=0,
             key="selector_t2",
             label_visibility="collapsed"
         )
-        st.session_state.selected_week_state = selected_week_t2
-
-    if st.session_state.selected_week_state != "--- 請選擇週次 ---":
-        st.header(f"🎧 課堂串流音訊同步 ({st.session_state.selected_week_state})")
+        
+    # 藍色提示方塊乖乖出現在按鈕「下方」！
+    if selected_week_t2 == "--- 請選擇週次 ---":
+        st.write(" ")
+        st.info("🎧 暫不提供「每週線上課程」教材音訊。")
+    else:
+        st.header(f"🎧 課堂串流音訊同步 ({selected_week_t2})")
         st.write("請聆聽來自雲端硬碟的語音素材：")
-        st.audio(WEEK_DRIVE_IDS[st.session_state.selected_week_state]["audio_url"], format="audio/mp3")
+        st.audio(WEEK_DRIVE_IDS[selected_week_t2]["audio_url"], format="audio/mp3")
 
 # =================================================================
-# ✍️ 欄位三：課後練習
+# ✍️ 欄位三：課後練習（補齊全新部署）
 # =================================================================
 with tab3:
-    # 🚀 修正（四）：【上下位置交換】練習分頁提示方塊置頂渲染（如圖三）
-    if st.session_state.selected_week_state == "--- 請選擇週次 ---":
-        st.info("✍️ 請先選取週次以獲取該週的課後練習表單。")
-        
+    # 🚀 修正（五）：【位置上下交換】—— 練習分頁同樣是按鈕在上方！
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week_t3 = st.selectbox(
             "請選取你要複習的週次：",
             options=["--- 請選擇週次 ---"] + list(WEEK_DRIVE_IDS.keys()),
-            index=["--- 請選擇週次 ---", *WEEK_DRIVE_IDS.keys()].index(st.session_state.selected_week_state),
+            index=0,
             key="selector_t3",
             label_visibility="collapsed"
         )
-        st.session_state.selected_week_state = selected_week_t3
-
-    if st.session_state.selected_week_state != "--- 請選擇週次 ---":
-        current_week_info = WEEK_DRIVE_IDS[st.session_state.selected_week_state]
-        st.header(f"📝 {st.session_state.selected_week_state} 課後複習驗證")
+        
+    # 藍色提示方塊乖乖出現在按鈕「下方」！
+    if selected_week_t3 == "--- 請選擇週次 ---":
+        st.write(" ")
+        st.info("✍️ 請先選取週次以獲取該週的課後練習表單。")
+    else:
+        current_week_info = WEEK_DRIVE_IDS[selected_week_t3]
+        st.header(f"📝 {selected_week_t3} 課後複習驗證")
         st.write("請點擊下方按鈕，前往填寫本週的模擬認證線上表單：")
         
         # 綁定您提供的正式 Google 表單連結
         st.link_button(
-            label=f"🎯 開啟 【{st.session_state.selected_week_state}】 模擬測驗表單",
+            label=f"🎯 開啟 【{selected_week_t3}】 模擬測驗表單",
             url=current_week_info["form_url"],
             type="primary",
             use_container_width=True
@@ -166,9 +161,9 @@ with tab3:
         
         st.markdown("""
         <div style='background-color: #FFF9E6; padding: 15px; border-radius: 8px; border-left: 5px solid #FFA000; margin-top: 20px;'>
-            <span style='color: #FFA000; font-weight: bold;'>📌 填寫说明：</span><br>
+            <span style='color: #FFA000; font-weight: bold;'>📌 填寫說明：</span><br>
             <p style='color: #31333F; margin-top: 5px;'>
-                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的族語語法對齊解析。
+                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字。
             </p>
         </div>
         """, unsafe_allow_html=True)

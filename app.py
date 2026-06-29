@@ -21,7 +21,7 @@ def get_amis_drive_content(file_id):
     except Exception as e:
         return f"🚨 發生錯誤：{str(e)}"
 
-# --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
+# --- 🗺️ 雲端硬碟每週教材與表單對照表 (動態擴充戰術防線) ---
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
@@ -37,43 +37,42 @@ WEEK_DRIVE_IDS = {
     }
 }
 
+# --- 🧠 初始化全域週次選擇狀態 (防止跨分頁錯位) ---
+if "selected_week_state" not in st.session_state:
+    st.session_state.selected_week_state = "--- 請選擇週次 ---"
+
 # --- 前端視覺渲染層 ---
 st.title("🎓 阿美語高級認證班")
 st.divider()
 
-# 🚀 欄位同步擴充：劃分三個分頁標籤
+# 🚀 修正（一）：劃分三個分頁標籤，完美包覆您所有的教學單元
 tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊", "✍️ 課後練習"])
 
 # =================================================================
 # 📖 欄位一：每週線上教材
 # =================================================================
 with tab1:
-    # 🚀 關鍵修正（一）：在週次選單被實例化前，先用臨時變數撈取 session 狀態，確保提示在最上方
-    # 為防止 Streamlit 刷新機制錯位，我們用一個暫時性的變數來攔截選單值
-    if "selected_week_state" not in st.session_state:
-        st.session_state.selected_week_state = "--- 請選擇週次 ---"
-
-    # 🚀 關鍵修正（二）：【上下位置交換】—— 藍色提示訊息強制移到網頁最上方渲染！
+    # 🚀 修正（二）：【上下位置交換】藍色提示方塊置頂渲染（如圖一）
     if st.session_state.selected_week_state == "--- 請選擇週次 ---":
         st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
     
-    # 緊接著提示方塊下方，才是摺疊按鈕
+    # 選擇器按鈕緊跟在提示方塊下方
     with st.expander("📅 選擇複習週次", expanded=False):
-        selected_week = st.selectbox(
+        selected_week_t1 = st.selectbox(
             "請選取你要複習的週次：",
             options=["--- 請選擇週次 ---"] + list(WEEK_DRIVE_IDS.keys()),
-            key="week_selector_tab1",
+            index=["--- 請選擇週次 ---", *WEEK_DRIVE_IDS.keys()].index(st.session_state.selected_week_state),
+            key="selector_t1",
             label_visibility="collapsed"
         )
-        # 即時更新全域狀態
-        st.session_state.selected_week_state = selected_week
+        st.session_state.selected_week_state = selected_week_t1
 
-    # 如果手動點選了週次，下方才解鎖內容
-    if selected_week != "--- 請選擇週次 ---":
-        current_week_info = WEEK_DRIVE_IDS[selected_week]
+    # 執行內容解鎖
+    if st.session_state.selected_week_state != "--- 請選擇週次 ---":
+        current_week_info = WEEK_DRIVE_IDS[st.session_state.selected_week_state]
         st.header(f"📘 {current_week_info['title']}")
         
-        with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材..."):
+        with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{st.session_state.selected_week_state}】教材..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
@@ -115,16 +114,16 @@ with tab1:
 # 🎵 欄位二：課堂使用音訊
 # =================================================================
 with tab2:
-    # 🚀 關鍵修正（三）：【上下位置交換】—— 音訊分頁提示框同樣強制置頂
+    # 🚀 修正（三）：【上下位置交換】音訊分頁提示方塊置頂渲染（如圖二）
     if st.session_state.selected_week_state == "--- 請選擇週次 ---":
         st.info("🎧 暫不提供「每週線上課程」教材音訊。")
-    
+        
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week_t2 = st.selectbox(
             "請選取你要複習的週次：",
             options=["--- 請選擇週次 ---"] + list(WEEK_DRIVE_IDS.keys()),
             index=["--- 請選擇週次 ---", *WEEK_DRIVE_IDS.keys()].index(st.session_state.selected_week_state),
-            key="week_selector_tab2",
+            key="selector_t2",
             label_visibility="collapsed"
         )
         st.session_state.selected_week_state = selected_week_t2
@@ -138,16 +137,16 @@ with tab2:
 # ✍️ 欄位三：課後練習
 # =================================================================
 with tab3:
-    # 🚀 關鍵修正（四）：【上下位置交換】—— 練習分頁提示框同樣強制置頂
+    # 🚀 修正（四）：【上下位置交換】練習分頁提示方塊置頂渲染（如圖三）
     if st.session_state.selected_week_state == "--- 請選擇週次 ---":
         st.info("✍️ 請先選取週次以獲取該週的課後練習表單。")
-    
+        
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week_t3 = st.selectbox(
             "請選取你要複習的週次：",
             options=["--- 請選擇週次 ---"] + list(WEEK_DRIVE_IDS.keys()),
             index=["--- 請選擇週次 ---", *WEEK_DRIVE_IDS.keys()].index(st.session_state.selected_week_state),
-            key="week_selector_tab3",
+            key="selector_t3",
             label_visibility="collapsed"
         )
         st.session_state.selected_week_state = selected_week_t3
@@ -157,6 +156,7 @@ with tab3:
         st.header(f"📝 {st.session_state.selected_week_state} 課後複習驗證")
         st.write("請點擊下方按鈕，前往填寫本週的模擬認證線上表單：")
         
+        # 綁定您提供的正式 Google 表單連結
         st.link_button(
             label=f"🎯 開啟 【{st.session_state.selected_week_state}】 模擬測驗表單",
             url=current_week_info["form_url"],
@@ -166,7 +166,7 @@ with tab3:
         
         st.markdown("""
         <div style='background-color: #FFF9E6; padding: 15px; border-radius: 8px; border-left: 5px solid #FFA000; margin-top: 20px;'>
-            <span style='color: #FFA000; font-weight: bold;'>📌 填寫說明：</span><br>
+            <span style='color: #FFA000; font-weight: bold;'>📌 填寫说明：</span><br>
             <p style='color: #31333F; margin-top: 5px;'>
                 表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的族語語法對齊解析。
             </p>

@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import re
-import streamlit.components.v1 as components
 
 # --- 頁面系統設定 ---
 st.set_page_config(
@@ -23,17 +22,18 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
+# 🚀 修正：換回最穩定的原生直連下載公式，供原生 st.audio 播放器直接抓取
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "exam_audio_preview_url": "https://drive.google.com/file/d/1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u/preview", 
+        "exam_audio_url": "https://drive.google.com/uc?export=download&id=1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第二週的Drive_ID",
-        "exam_audio_preview_url": "https://drive.google.com/file/d/這裡填入第二週的音檔ID/preview",
+        "exam_audio_url": "https://drive.google.com/uc?export=download&id=這裡填入第二週的音檔ID",
         "form_url": "https://forms.gle/yyyyyy"
     }
 }
@@ -97,21 +97,8 @@ with tab1:
                     if current_expander:
                         with current_expander:
                             if is_full_exam_block:
-                                # 🚀 重新校準遮罩尺寸：
-                                # 這次把高度拉到 68px，並完美定位，直接秀出白底的正中央播放鍵、暫停鍵與進度條！
-                                components.html(
-                                    f"""
-                                    <div style="width: 100%; height: 68px; overflow: hidden; border-radius: 12px; border: 1px solid #E2E8F0; background-color: #1A1A1A;">
-                                        <iframe src="{current_week_info["exam_audio_preview_url"]}" 
-                                                width="100%" 
-                                                height="500" 
-                                                style="border: none; margin-top: -436px; margin-left: 0px;" 
-                                                scrolling="no">
-                                        </iframe>
-                                    </div>
-                                    """,
-                                    height=75
-                                )
+                                # 🚀 修正：換回原本最漂亮、乾淨的灰色原生播放器
+                                st.audio(current_week_info["exam_audio_url"], format="audio/mp3")
                                 st.write(" ")
                             
                             st.markdown(block, unsafe_allow_html=True)
@@ -174,7 +161,7 @@ with tab3:
         st.write("請點擊下方按鈕，前往填寫本週的模擬認證線上表單：")
         
         st.link_button(
-            label=f"🎯 開享 【{selected_week_t3}】 模擬測驗表單",
+            label=f"🎯 開啟 【{selected_week_t3}】 模擬測驗表單",
             url=current_week_info["form_url"],
             type="primary",
             use_container_width=True

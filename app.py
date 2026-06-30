@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 import re
-import streamlit.components.v1 as components # 🚀 核心新增：引入網頁元件庫
+import streamlit.components.v1 as components
 
 # --- 頁面系統設定 ---
 st.set_page_config(
@@ -23,7 +23,6 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 🚀 終極修正：直接使用 Google Drive 官方網頁嵌入連結格式 (preview)
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
@@ -98,11 +97,20 @@ with tab1:
                     if current_expander:
                         with current_expander:
                             if is_full_exam_block:
-                                # 🚀 終極修正：使用 HTML 嵌入技術，直接向學生的瀏覽器調用 Google 官方隨身影音框架
-                                # 寬度 100%、高度 100 像素，剛好是一個精美的精簡播放器，且絕不被 Google 攔截封鎖
+                                # 🚀 美化核心：使用 CSS 膠囊遮罩，強制隱藏黑背景與右上角的外跳按鈕
+                                # 透過 margin 和 height 的微調，讓介面只剩下乾淨的白底播放控制列
                                 components.html(
-                                    f'<iframe src="{current_week_info["exam_audio_preview_url"]}" width="100%" height="100" style="border:none; border-radius:10px;"></iframe>',
-                                    height=110
+                                    f"""
+                                    <div style="width: 100%; height: 56px; overflow: hidden; border-radius: 8px; border: 1px solid #E0E0E0; background-color: #FFFFFF;">
+                                        <iframe src="{current_week_info["exam_audio_preview_url"]}" 
+                                                width="100%" 
+                                                height="500" 
+                                                style="border: none; margin-top: -442px; margin-left: 0px;" 
+                                                scrolling="no">
+                                        </iframe>
+                                    </div>
+                                    """,
+                                    height=65
                                 )
                                 st.write(" ")
                             

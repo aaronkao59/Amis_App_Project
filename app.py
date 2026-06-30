@@ -48,18 +48,17 @@ tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"
 # 📖 欄位一：每週線上教材
 # =================================================================
 with tab1:
-    # 🚀 核心優化：改用 st.radio 並橫向排列，徹底根除任何打字與鍵盤彈出的可能性！
+    # 🚀 核心修正一：收合按鈕擺在最上方
     with st.expander("📅 選擇複習週次", expanded=False):
-        selected_week = st.radio(
+        selected_week = st.selectbox(
             "請選取你要複習的週次：",
-            options=["請選擇"] + list(WEEK_DRIVE_IDS.keys()),
+            options=["請選擇"] + list(WEEK_DRIVE_IDS.keys()), # 精簡字串長度，強制關閉打字搜尋框
             index=0,
-            horizontal=True, # 橫向排列，點選更流暢
             key="selector_t1",
             label_visibility="collapsed"
         )
     
-    # 藍色提示方塊出現在按鈕「下方」
+    # 🚀 核心修正二：藍色提示方塊出現在按鈕「下方」
     if selected_week == "請選擇":
         st.write(" ")
         st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
@@ -109,18 +108,17 @@ with tab1:
 # 🎵 欄位二：課堂使用音訊
 # =================================================================
 with tab2:
-    # 🚀 音訊分頁同步改用 st.radio 阻絕輸入
+    # 🚀 核心修正三：音訊分頁按鈕在上方
     with st.expander("📅 選擇複習週次", expanded=False):
-        selected_week_t2 = st.radio(
+        selected_week_t2 = st.selectbox(
             "請選取你要複習的週次：",
             options=["請選擇"] + list(WEEK_DRIVE_IDS.keys()),
             index=0,
-            horizontal=True,
             key="selector_t2",
             label_visibility="collapsed"
         )
         
-    # 藍色提示方塊出現在按鈕「下方」
+    # 🚀 核心修正四：藍色提示方塊出現在按鈕「下方」
     if selected_week_t2 == "請選擇":
         st.write(" ")
         st.info("🎧 暫不提供「每週線上課程」教材音訊。")
@@ -133,18 +131,17 @@ with tab2:
 # ✍️ 欄位三：課後練習
 # =================================================================
 with tab3:
-    # 🚀 練習分頁同步改用 st.radio 阻絕輸入
+    # 🚀 核心修正五：練習分頁按鈕在上方
     with st.expander("📅 選擇複習週次", expanded=False):
-        selected_week_t3 = st.radio(
+        selected_week_t3 = st.selectbox(
             "請選取你要複習的週次：",
             options=["請選擇"] + list(WEEK_DRIVE_IDS.keys()),
             index=0,
-            horizontal=True,
             key="selector_t3",
             label_visibility="collapsed"
         )
         
-    # 藍色提示方塊出現在按鈕「下方」
+    # 🚀 核心修正六：藍色提示方塊出現在按鈕「下方」
     if selected_week_t3 == "請選擇":
         st.write(" ")
         st.info("✍️ 請先選取週次以獲取該週的課後練習表單。")

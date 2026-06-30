@@ -22,17 +22,18 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
+# 🚀 終極修正：將 exam_audio_url 換成「&export=open」串流專用接口，完美破解 0:00 的死鎖問題
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "exam_audio_url": "https://docs.google.com/uc?export=download&id=1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
+        "exam_audio_url": "https://drive.google.com/uc?id=1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u&export=open", 
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第二週的Drive_ID",
-        "exam_audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        "exam_audio_url": "https://drive.google.com/uc?id=這裡填入第二週的音檔ID&export=open",
         "form_url": "https://forms.gle/yyyyyy"
     }
 }

@@ -22,17 +22,18 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
+# 🚀 核心優化：新增 exam_audio_url 欄位。請將 Google Drive 的音檔轉為直連網址填入！
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "exam_audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", # 👈 這裡先用測試音檔，未來換成你 Google Drive 的 w01_full_exam.mp3 直連連結
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第二週的Drive_ID",
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        "exam_audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
         "form_url": "https://forms.gle/yyyyyy"
     }
 }
@@ -48,17 +49,17 @@ tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"
 # 📖 欄位一：每週線上教材
 # =================================================================
 with tab1:
-    # 🚀 核心修正一：收合按鈕擺在最上方
+    # 收合按鈕擺在最上方
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week = st.selectbox(
             "請選取你要複習的週次：",
-            options=["請選擇"] + list(WEEK_DRIVE_IDS.keys()), # 精簡字串長度，強制關閉打字搜尋框
+            options=["請選擇"] + list(WEEK_DRIVE_IDS.keys()),
             index=0,
             key="selector_t1",
             label_visibility="collapsed"
         )
     
-    # 🚀 核心修正二：藍色提示方塊出現在按鈕「下方」
+    # 藍色提示方塊出現在按鈕「下方」
     if selected_week == "請選擇":
         st.write(" ")
         st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
@@ -87,6 +88,12 @@ with tab1:
                 else:
                     if current_expander:
                         with current_expander:
+                            # 🚀 核心修正：當上一個標題是【對話推論完整題組】時，在內文最上方強塞音訊播放器！
+                            # 這裡完美對齊了你截圖紅框要求的位置
+                            if "完整題組" in current_expander.label:
+                                st.audio(current_week_info["exam_audio_url"], format="audio/mp3")
+                                st.write(" ") # 留白保持視覺舒適
+                            
                             st.markdown(block, unsafe_allow_html=True)
                     else:
                         st.markdown(block, unsafe_allow_html=True)
@@ -108,7 +115,6 @@ with tab1:
 # 🎵 欄位二：課堂使用音訊
 # =================================================================
 with tab2:
-    # 🚀 核心修正三：音訊分頁按鈕在上方
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week_t2 = st.selectbox(
             "請選取你要複習的週次：",
@@ -118,7 +124,6 @@ with tab2:
             label_visibility="collapsed"
         )
         
-    # 🚀 核心修正四：藍色提示方塊出現在按鈕「下方」
     if selected_week_t2 == "請選擇":
         st.write(" ")
         st.info("🎧 暫不提供「每週線上課程」教材音訊。")
@@ -131,7 +136,6 @@ with tab2:
 # ✍️ 欄位三：課後練習
 # =================================================================
 with tab3:
-    # 🚀 核心修正五：練習分頁按鈕在上方
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week_t3 = st.selectbox(
             "請選取你要複習的週次：",
@@ -141,7 +145,6 @@ with tab3:
             label_visibility="collapsed"
         )
         
-    # 🚀 核心修正六：藍色提示方塊出現在按鈕「下方」
     if selected_week_t3 == "請選擇":
         st.write(" ")
         st.info("✍️ 請先選取週次以獲取該週的課後練習表單。")

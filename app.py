@@ -97,20 +97,20 @@ with tab1:
                     if current_expander:
                         with current_expander:
                             if is_full_exam_block:
-                                # 🚀 美化核心：使用 CSS 膠囊遮罩，強制隱藏黑背景與右上角的外跳按鈕
-                                # 透過 margin 和 height 的微調，讓介面只剩下乾淨的白底播放控制列
+                                # 🚀 重新校準遮罩尺寸：
+                                # 這次把高度拉到 68px，並完美定位，直接秀出白底的正中央播放鍵、暫停鍵與進度條！
                                 components.html(
                                     f"""
-                                    <div style="width: 100%; height: 56px; overflow: hidden; border-radius: 8px; border: 1px solid #E0E0E0; background-color: #FFFFFF;">
+                                    <div style="width: 100%; height: 68px; overflow: hidden; border-radius: 12px; border: 1px solid #E2E8F0; background-color: #1A1A1A;">
                                         <iframe src="{current_week_info["exam_audio_preview_url"]}" 
                                                 width="100%" 
                                                 height="500" 
-                                                style="border: none; margin-top: -442px; margin-left: 0px;" 
+                                                style="border: none; margin-top: -436px; margin-left: 0px;" 
                                                 scrolling="no">
                                         </iframe>
                                     </div>
                                     """,
-                                    height=65
+                                    height=75
                                 )
                                 st.write(" ")
                             
@@ -174,7 +174,7 @@ with tab3:
         st.write("請點擊下方按鈕，前往填寫本週的模擬認證線上表單：")
         
         st.link_button(
-            label=f"🎯 開啟 【{selected_week_t3}】 模擬測驗表單",
+            label=f"🎯 開享 【{selected_week_t3}】 模擬測驗表單",
             url=current_week_info["form_url"],
             type="primary",
             use_container_width=True

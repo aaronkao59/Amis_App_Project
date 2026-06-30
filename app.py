@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import re
+import streamlit.components.v1 as components # 🚀 核心新增：引入網頁元件庫
 
 # --- 頁面系統設定 ---
 st.set_page_config(
@@ -22,18 +23,18 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 🚀 終極修正：將 exam_audio_url 換成「&export=open」串流專用接口，完美破解 0:00 的死鎖問題
+# 🚀 終極修正：直接使用 Google Drive 官方網頁嵌入連結格式 (preview)
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "exam_audio_url": "https://drive.google.com/uc?id=1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u&export=open", 
+        "exam_audio_preview_url": "https://drive.google.com/file/d/1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u/preview", 
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第二週的Drive_ID",
-        "exam_audio_url": "https://drive.google.com/uc?id=這裡填入第二週的音檔ID&export=open",
+        "exam_audio_preview_url": "https://drive.google.com/file/d/這裡填入第二週的音檔ID/preview",
         "form_url": "https://forms.gle/yyyyyy"
     }
 }
@@ -97,7 +98,12 @@ with tab1:
                     if current_expander:
                         with current_expander:
                             if is_full_exam_block:
-                                st.audio(current_week_info["exam_audio_url"], format="audio/mp3")
+                                # 🚀 終極修正：使用 HTML 嵌入技術，直接向學生的瀏覽器調用 Google 官方隨身影音框架
+                                # 寬度 100%、高度 100 像素，剛好是一個精美的精簡播放器，且絕不被 Google 攔截封鎖
+                                components.html(
+                                    f'<iframe src="{current_week_info["exam_audio_preview_url"]}" width="100%" height="100" style="border:none; border-radius:10px;"></iframe>',
+                                    height=110
+                                )
                                 st.write(" ")
                             
                             st.markdown(block, unsafe_allow_html=True)

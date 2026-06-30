@@ -9,7 +9,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- 🎯 遠端讀取 Google Drive 檔案的函數 ---
+# --- 🎯 遠端讀取 Google Drive 文件的函數 ---
 def get_amis_drive_content(file_id):
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
     try:
@@ -21,19 +21,31 @@ def get_amis_drive_content(file_id):
     except Exception as e:
         return f"🚨 發生錯誤：{str(e)}"
 
+# --- 🎯 遠端下載 Google Drive 音訊二進位檔的函數（解決 0:00 無法播放的終極解法） ---
+@st.cache_data(show_spinner=False)
+def load_audio_from_drive(file_id):
+    download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
+    try:
+        response = requests.get(download_url)
+        if response.status_code == 200:
+            return response.content # 傳回純二進位音訊流
+    except Exception:
+        return None
+    return None
+
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 🚀 修正：換回最穩定的原生直連下載公式，供原生 st.audio 播放器直接抓取
+# 🚀 修正：這裡我們只需要填入您音檔的 Google Drive 檔案 ID 即可！
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "exam_audio_url": "https://drive.google.com/uc?export=download&id=1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
+        "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", # 👈 這是您上傳的音檔 ID
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第二週的Drive_ID",
-        "exam_audio_url": "https://drive.google.com/uc?export=download&id=這裡填入第二週的音檔ID",
+        "audio_id": "這裡填入第二週的音檔ID",
         "form_url": "https://forms.gle/yyyyyy"
     }
 }
@@ -67,8 +79,10 @@ with tab1:
         current_week_info = WEEK_DRIVE_IDS[selected_week]
         st.header(f"📘 {current_week_info['title']}")
         
-        with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材..."):
+        with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
+            # 在後台默默把音檔下載進緩存，完全不影響視覺
+            audio_bytes = load_audio_from_drive(current_week_info["audio_id"])
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
             pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】)'
@@ -97,8 +111,11 @@ with tab1:
                     if current_expander:
                         with current_expander:
                             if is_full_exam_block:
-                                # 🚀 修正：換回原本最漂亮、乾淨的灰色原生播放器
-                                st.audio(current_week_info["exam_audio_url"], format="audio/mp3")
+                                # 🚀 修正：使用原生灰色播放器，直接讀取剛才下載好的乾淨音訊流，直接秒開解鎖時間軸！
+                                if audio_bytes:
+                                    st.audio(audio_bytes, format="audio/mp3")
+                                else:
+                                    st.error("⚠️ 本週聽力音檔載入失敗，請確認雲端硬碟權限是否開啟。")
                                 st.write(" ")
                             
                             st.markdown(block, unsafe_allow_html=True)

@@ -22,11 +22,12 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
+# 🚀 核心修正：已將您提供的正式聽力音檔直連網址填入「第一週」的 exam_audio_url 中！
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "exam_audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "exam_audio_url": "https://docs.google.com/uc?export=download&id=1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
     },
     "第二週": {
@@ -58,7 +59,7 @@ with tab1:
             label_visibility="collapsed"
         )
     
-    # 藍色提示方塊出現在按鈕「下方"]
+    # 藍色提示方塊出現在按鈕「下方」
     if selected_week == "請選擇":
         st.write(" ")
         st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
@@ -73,7 +74,6 @@ with tab1:
             pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】)'
             blocks = re.split(pattern, lecture_content)
             
-            # 用一個變數來記錄當前展開的盒子是不是完整題組
             is_full_exam_block = False
             current_expander = None
             
@@ -89,7 +89,6 @@ with tab1:
                 
                 if is_match:
                     current_expander = st.expander(f"{block.strip()} 顯示/隱藏", expanded=False)
-                    # 🚀 核心修正一：如果是完整題組標題，立刻將狀態標記為 True
                     if "完整題組" in block.strip():
                         is_full_exam_block = True
                     else:
@@ -97,7 +96,6 @@ with tab1:
                 else:
                     if current_expander:
                         with current_expander:
-                            # 🚀 核心修正二：改用剛才記錄的狀態變數來判斷，安全不報錯！
                             if is_full_exam_block:
                                 st.audio(current_week_info["exam_audio_url"], format="audio/mp3")
                                 st.write(" ")

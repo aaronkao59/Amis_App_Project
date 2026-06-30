@@ -22,7 +22,6 @@ def get_amis_drive_content(file_id):
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 🚀 核心修正：已將您提供的正式聽力音檔直連網址填入「第一週」的 exam_audio_url 中！
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",

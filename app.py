@@ -177,7 +177,7 @@ with tab3:
         
         # 🚀 修正（二）：渲染第一則表單按鈕（紅色主要按鈕）
         st.link_button(
-            label=f"🎯 開啟 【{selected_week_t3}】 聽力練習表單01（聽力/對話）",
+            label=f"🎯 開啟 【{selected_week_t3}】 聽力練習表單01",
             url=current_week_info["form_url"],
             type="primary",
             use_container_width=True

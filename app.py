@@ -41,7 +41,7 @@ WEEK_DRIVE_IDS = {
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
         "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog",
-        "form_url_2": "https://docs.google.com/forms/d/e/這裡填入第一週第二則表單的ID/viewform" # 👈 這裡換成你第二則表單的真正連結
+        "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205" # 👈 這裡換成你第二則表單的真正連結
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",

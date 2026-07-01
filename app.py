@@ -21,7 +21,7 @@ def get_amis_drive_content(file_id):
     except Exception as e:
         return f"🚨 發生錯誤：{str(e)}"
 
-# --- 🎯 遠端下載 Google Drive 音訊二進位檔的函數（解決 0:00 無法播放的終極解法） ---
+# --- 🎯 遠端下載 Google Drive 音訊二進位檔的函數 ---
 @st.cache_data(show_spinner=False)
 def load_audio_from_drive(file_id):
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
@@ -34,19 +34,21 @@ def load_audio_from_drive(file_id):
     return None
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 🚀 修正：這裡我們只需要填入您音檔的 Google Drive 檔案 ID 即可！
+# 🚀 修正（一）：擴充架構，新增 "form_url_2" 欄位供您填入第二則 Google 表單連結
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
-        "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", # 👈 這是您上傳的音檔 ID
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog"
+        "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog",
+        "form_url_2": "https://docs.google.com/forms/d/e/這裡填入第一週第二則表單的ID/viewform" # 👈 這裡換成你第二則表單的真正連結
     },
     "第二週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第二週的Drive_ID",
         "audio_id": "這裡填入第二週的音檔ID",
-        "form_url": "https://forms.gle/yyyyyy"
+        "form_url": "https://forms.gle/yyyyyy",
+        "form_url_2": "https://forms.gle/zzzzzz" # 👈 第二週的第二則表單
     }
 }
 
@@ -61,7 +63,6 @@ tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊"
 # 📖 欄位一：每週線上教材
 # =================================================================
 with tab1:
-    # 收合按鈕擺在最上方
     with st.expander("📅 選擇複習週次", expanded=False):
         selected_week = st.selectbox(
             "請選取你要複習的週次：",
@@ -71,7 +72,6 @@ with tab1:
             label_visibility="collapsed"
         )
     
-    # 藍色提示方塊出現在按鈕「下方」
     if selected_week == "請選擇":
         st.write(" ")
         st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
@@ -81,7 +81,6 @@ with tab1:
         
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
-            # 在後台默默把音檔下載進緩存，完全不影響視覺
             audio_bytes = load_audio_from_drive(current_week_info["audio_id"])
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
@@ -111,7 +110,6 @@ with tab1:
                     if current_expander:
                         with current_expander:
                             if is_full_exam_block:
-                                # 🚀 修正：使用原生灰色播放器，直接讀取剛才下載好的乾淨音訊流，直接秒開解鎖時間軸！
                                 if audio_bytes:
                                     st.audio(audio_bytes, format="audio/mp3")
                                 else:
@@ -175,12 +173,23 @@ with tab3:
     else:
         current_week_info = WEEK_DRIVE_IDS[selected_week_t3]
         st.header(f"📝 {selected_week_t3} 課後複習驗證")
-        st.write("請點擊下方按鈕，前往填寫本週的模擬認證線上表單：")
+        st.write("請點擊下方按鈕，前往填寫本週的認證線上表單：")
         
+        # 🚀 修正（二）：渲染第一則表單按鈕（紅色主要按鈕）
         st.link_button(
-            label=f"🎯 開啟 【{selected_week_t3}】 模擬測驗表單",
+            label=f"🎯 開啟 【{selected_week_t3}】 聽力練習表單01（聽力/對話）",
             url=current_week_info["form_url"],
             type="primary",
+            use_container_width=True
+        )
+        
+        st.write(" ") # 稍微留空留白
+        
+        # 🚀 修正（三）：渲染新增的第二則表單按鈕（灰色次要按鈕，與紅色按鈕做出視覺區隔）
+        st.link_button(
+            label=f"📝 開啟 【{selected_week_t3}】 聽力練習表單02",
+            url=current_week_info["form_url_2"],
+            type="secondary",
             use_container_width=True
         )
         
@@ -188,7 +197,7 @@ with tab3:
         <div style='background-color: #FFF9E6; padding: 15px; border-radius: 8px; border-left: 5px solid #FFA000; margin-top: 20px;'>
             <span style='color: #FFA000; font-weight: bold;'>📌 填寫說明：</span><br>
             <p style='color: #31333F; margin-top: 5px;'>
-                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字。
+                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字與語法對齊解析。
             </p>
         </div>
         """, unsafe_allow_html=True)

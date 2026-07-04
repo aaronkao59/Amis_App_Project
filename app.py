@@ -34,7 +34,6 @@ def load_audio_from_drive(file_id):
     return None
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 🚀 核心擴充：新增 "form_url_3" 欄位，請將後面的網址換成您第一週第三則表單的真正連結！
 WEEK_DRIVE_IDS = {
     "第一週": {
         "title": "聽力/對話推論",
@@ -42,23 +41,32 @@ WEEK_DRIVE_IDS = {
         "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog",
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205",
-        "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6" 
+        "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6",
+        # 🚀 新增：自定義按鈕標籤與專屬說明
+        "form_btn_1_label": "🎯 開啟 【第一週】 聽力練習表單01",
+        "instruction_text": "表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字與語法解析。"
     },
     "第二週": {
         "title": "閱讀/詞彙語意",
         "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
         "audio_id": "這裡填入第二週的音檔ID",
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205",
-        "form_url_2": "https://forms.gle/zzzzzz",
-        "form_url_3": "https://forms.gle/這裡填入第二週聽力練習表單03的正式連結" 
+        # 將尚未設置的表單網址設為空字串，以觸發隱藏邏輯
+        "form_url_2": "", 
+        "form_url_3": "", 
+        # 🚀 新增：自定義按鈕標籤與專屬說明
+        "form_btn_1_label": "🎯 開啟 【第二週】 閱讀與詞彙測驗", 
+        "instruction_text": "請在完成本週的文本閱讀後，進行詞彙語意測驗。送出後請務必檢視錯題解析以鞏固記憶。" 
     },
     "第三週": {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第三週的Drive_ID",
         "audio_id": "這裡填入第三週的音檔ID",
-        "form_url": "https://forms.gle/yyyyyy",
-        "form_url_2": "https://forms.gle/zzzzzz",
-        "form_url_3": "https://forms.gle/這裡填入第二週聽力練習表單03的正式連結" 
+        "form_url": "",
+        "form_url_2": "",
+        "form_url_3": "",
+        "form_btn_1_label": "",
+        "instruction_text": "請依循表單內的指示完成測驗。"
     }
 }
 
@@ -185,39 +193,44 @@ with tab3:
         st.header(f"📝 {selected_week_t3} 課後複習驗證")
         st.write("請點擊下方按鈕，前往填寫本週的認證線上表單：")
         
-        # 🎯 聽力練習表單01（紅色主要按鈕）
-        st.link_button(
-            label=f"🎯 開啟 【{selected_week_t3}】 聽力練習表單01",
-            url=current_week_info["form_url"],
-            type="primary",
-            use_container_width=True
-        )
+        # 🎯 動態渲染表單01（有網址才顯示，並讀取自訂按鈕名稱）
+        if current_week_info.get("form_url"):
+            btn_label_1 = current_week_info.get("form_btn_1_label", f"🎯 開啟 【{selected_week_t3}】 練習表單01")
+            st.link_button(
+                label=btn_label_1,
+                url=current_week_info["form_url"],
+                type="primary",
+                use_container_width=True
+            )
+            st.write(" ") 
         
-        st.write(" ") 
-        
-        # 📝 聽力練習表單02（紅色主要按鈕）
-        st.link_button(
-            label=f"📝 開啟 【{selected_week_t3}】 聽力練習表單02",
-            url=current_week_info["form_url_2"],
-            type="primary",
-            use_container_width=True
-        )
+        # 📝 動態渲染表單02（有網址才顯示）
+        if current_week_info.get("form_url_2"):
+            st.link_button(
+                label=f"📝 開啟 【{selected_week_t3}】 聽力練習表單02",
+                url=current_week_info["form_url_2"],
+                type="primary",
+                use_container_width=True
+            )
+            st.write(" ") 
 
-        st.write(" ") 
-
-        # 🚀 核心新增：聽力練習表單03（設定為相同的 type="primary" 紅色外觀）
-        st.link_button(
-            label=f"🚀 開啟 【{selected_week_t3}】 聽力練習表單03",
-            url=current_week_info["form_url_3"],
-            type="primary",
-            use_container_width=True
-        )
+        # 🚀 動態渲染表單03（有網址才顯示）
+        if current_week_info.get("form_url_3"):
+            st.link_button(
+                label=f"🚀 開啟 【{selected_week_t3}】 聽力練習表單03",
+                url=current_week_info["form_url_3"],
+                type="primary",
+                use_container_width=True
+            )
         
-        st.markdown("""
+        # 動態讀取每週專屬說明文字
+        instruction = current_week_info.get("instruction_text", "請依循表單內的指示完成測驗。")
+        
+        st.markdown(f"""
         <div style='background-color: #FFF9E6; padding: 15px; border-radius: 8px; border-left: 5px solid #FFA000; margin-top: 20px;'>
             <span style='color: #FFA000; font-weight: bold;'>📌 填寫說明：</span><br>
             <p style='color: #31333F; margin-top: 5px;'>
-                表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字與語法解析。
+                {instruction}
             </p>
         </div>
         """, unsafe_allow_html=True)

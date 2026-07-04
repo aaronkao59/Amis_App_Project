@@ -43,7 +43,7 @@ WEEK_DRIVE_IDS = {
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205",
         "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6",
         "form_btn_1_label": "🎯 開啟 【第一週】 聽力練習表單01",
-        "instruction_text": "若要閱讀題組的族語文字，可在 Google 表單內點選「音檔」連結，聆聽音檔的頁面中，打開「註解」即可。建議盡可能打完題再看",
+        "instruction_text": "若要閱讀題組的族語文字，可在 Google 表單內點選「音檔」連結，聆聽音檔的頁面中，打開「註解」即可。建議盡可能答完題再看",
         # 🚀 新增：第一週記事標題與內容
         "note_title": "💡 高級認證聽力破關公式：",
         "note_content": "高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。"

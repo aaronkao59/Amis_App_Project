@@ -42,21 +42,24 @@ WEEK_DRIVE_IDS = {
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog",
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205",
         "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6",
-        # 🚀 新增：自定義按鈕標籤與專屬說明
         "form_btn_1_label": "🎯 開啟 【第一週】 聽力練習表單01",
-        "instruction_text": "表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字與語法解析。"
+        "instruction_text": "表單送出後，您可以直接在 Google 表單內點選「查看分數」閱讀詳細的題組族語文字與語法解析。",
+        # 🚀 新增：第一週記事標題與內容
+        "note_title": "💡 高級認證聽力破關公式：",
+        "note_content": "高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。"
     },
     "第二週": {
         "title": "閱讀/詞彙語意",
         "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
         "audio_id": "這裡填入第二週的音檔ID",
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205",
-        # 將尚未設置的表單網址設為空字串，以觸發隱藏邏輯
         "form_url_2": "", 
         "form_url_3": "", 
-        # 🚀 新增：自定義按鈕標籤與專屬說明
         "form_btn_1_label": "🎯 開啟 【第二週】 閱讀與詞彙測驗01", 
-        "instruction_text": "練習完表單詞彙語意測驗後，亦可至「📖 每週線上教材」閱讀本週的線上課程內容，複習相關解析以鞏固記憶。" 
+        "instruction_text": "練習完表單詞彙語意測驗後，亦可至「📖 每週線上教材」閱讀本週的線上課程內容，複習相關解析以鞏固記憶。",
+        # 🚀 新增：第二週記事標題與內容 (請依需求修改)
+        "note_title": "💡 閱讀與詞彙攻略：",
+        "note_content": "本週重點在於理解上下文語意與詞根構詞後的語意變化。快速閱讀的核心技巧，先找出主詞與動詞的核心結構！" 
     },
     "第三週": {
         "title": "口說與長篇複句 (範例預留)",
@@ -66,7 +69,10 @@ WEEK_DRIVE_IDS = {
         "form_url_2": "",
         "form_url_3": "",
         "form_btn_1_label": "",
-        "instruction_text": "請依循表單內的指示完成測驗。"
+        "instruction_text": "請依循表單內的指示完成測驗。",
+        # 🚀 新增：第三週記事標題與內容 (請依需求修改)
+        "note_title": "💡 口說演練重點：",
+        "note_content": "開口說就是最好的練習！本週請著重於長篇複句的語氣停頓與連接詞的使用。"
     }
 }
 
@@ -142,11 +148,16 @@ with tab1:
         
         st.divider()
         st.markdown("### 🎯 記事")
-        st.markdown("""
+        
+        # 🚀 動態讀取並渲染每週專屬的記事內容
+        note_title = current_week_info.get("note_title", "💡 學習重點：")
+        note_content = current_week_info.get("note_content", "請持續累積實力，完成本週進度！")
+        
+        st.markdown(f"""
         <div style='background-color: #F0F7FF; padding: 18px; border-radius: 10px; border-left: 6px solid #1E88E5;'>
-            <b style='color: #1E88E5; font-size: 18px;'>💡 高級認證聽力破關公式：</b><br>
+            <b style='color: #1E88E5; font-size: 18px;'>{note_title}</b><br>
             <p style='color: #31333F; margin-top: 8px;'>
-                高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。
+                {note_content}
             </p>
         </div>
         """, unsafe_allow_html=True)

@@ -69,7 +69,7 @@ WEEK_DRIVE_IDS = {
         "form_url_2": "",
         "form_url_3": "",
         "form_btn_1_label": "",
-        "instruction_text": "請依循表單內的指示完成測驗。",
+        "instruction_text": "尚未上傳測驗表單，敬請期待。",
         # 🚀 新增：第三週記事標題與內容 (請依需求修改)
         "note_title": "💡 口說演練重點：",
         "note_content": "開口說就是最好的練習！本週請著重於長篇複句的語氣停頓與連接詞的使用。"
@@ -202,7 +202,7 @@ with tab3:
     else:
         current_week_info = WEEK_DRIVE_IDS[selected_week_t3]
         st.header(f"📝 {selected_week_t3} 課後複習驗證")
-        st.write("請點擊下方按鈕，前往填寫本週的認證線上表單：")
+        st.write("點擊下方按鈕，填寫本週的線上測驗表單：")
         
         # 🎯 動態渲染表單01（有網址才顯示，並讀取自訂按鈕名稱）
         if current_week_info.get("form_url"):

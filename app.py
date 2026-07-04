@@ -46,7 +46,7 @@ WEEK_DRIVE_IDS = {
     },
     "第二週": {
         "title": "閱讀/詞彙語意",
-        "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
+        "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
         "audio_id": "這裡填入第二週的音檔ID",
         "form_url": "https://forms.gle/yyyyyy",
         "form_url_2": "https://forms.gle/zzzzzz",

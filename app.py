@@ -56,7 +56,9 @@ WEEK_DRIVE_IDS = {
         "title": "口說與長篇複句 (範例預留)",
         "file_id": "這裡填入第三週的Drive_ID",
         "audio_id": "這裡填入第三週的音檔ID",
-        
+        "form_url": "https://forms.gle/yyyyyy",
+        "form_url_2": "https://forms.gle/zzzzzz",
+        "form_url_3": "https://forms.gle/這裡填入第二週聽力練習表單03的正式連結" 
     }
 }
 

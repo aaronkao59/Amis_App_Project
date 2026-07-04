@@ -45,12 +45,20 @@ WEEK_DRIVE_IDS = {
         "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6" 
     },
     "第二週": {
-        "title": "口說與長篇複句 (範例預留)",
-        "file_id": "這裡填入第二週的Drive_ID",
+        "title": "閱讀/詞彙語意",
+        "file_id": "https://drive.google.com/file/d/1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr/view?usp=sharing",
         "audio_id": "這裡填入第二週的音檔ID",
         "form_url": "https://forms.gle/yyyyyy",
         "form_url_2": "https://forms.gle/zzzzzz",
         "form_url_3": "https://forms.gle/這裡填入第二週聽力練習表單03的正式連結" 
+    },
+    "第三週": {
+        "title": "口說與長篇複句 (範例預留)",
+        "file_id": "這裡填入第三週的Drive_ID",
+        "audio_id": "這裡填入第三週的音檔ID",
+        "form_url": "https://forms.gle/yyyyyy",
+        "form_url_2": "https://forms.gle/zzzzzz",
+        "form_url_3": "https://forms.gle/這裡填入第三週聽力練習表單03的正式連結" 
     }
 }
 

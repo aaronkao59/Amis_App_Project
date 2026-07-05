@@ -44,7 +44,6 @@ WEEK_DRIVE_IDS = {
         "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6",
         "form_btn_1_label": "🎯 開啟 【第一週】 聽力練習表單01",
         "instruction_text": "若要閱讀題組的族語文字，可在 Google 表單內點選「音檔」連結，聆聽音檔的頁面中，打開「註解」即可。建議盡可能答完題再看",
-        # 🚀 新增：第一週記事標題與內容
         "note_title": "💡 高級認證聽力破關公式：",
         "note_content": "高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。"
     },
@@ -57,7 +56,6 @@ WEEK_DRIVE_IDS = {
         "form_url_3": "", 
         "form_btn_1_label": "🎯 開啟 【第二週】 閱讀與詞彙測驗01", 
         "instruction_text": "練習完表單詞彙語意測驗後，亦可至「📖 每週線上教材」閱讀本週的線上課程內容，複習相關解析以鞏固記憶。",
-        # 🚀 新增：第二週記事標題與內容 (請依需求修改)
         "note_title": "💡 閱讀與詞彙攻略：",
         "note_content": "本週重點在於理解上下文語意與詞根構詞後的語意變化。快速閱讀的核心技巧，先找出主詞與動詞的核心結構！" 
     },
@@ -70,7 +68,6 @@ WEEK_DRIVE_IDS = {
         "form_url_3": "",
         "form_btn_1_label": "",
         "instruction_text": "尚未上傳測驗表單，敬請期待。",
-        # 🚀 新增：第三週記事標題與內容 (請依需求修改)
         "note_title": "💡 口說演練重點：",
         "note_content": "開口說就是最好的練習！本週請著重於長篇複句的語氣停頓與連接詞的使用。"
     }
@@ -108,7 +105,8 @@ with tab1:
             audio_bytes = load_audio_from_drive(current_week_info["audio_id"])
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
-            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】)'
+            # 🚀 擴充正則表達式，加入第二週的專屬標籤
+            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【作業-表單01 答案解析】)'
             blocks = re.split(pattern, lecture_content)
             
             is_full_exam_block = False
@@ -118,14 +116,16 @@ with tab1:
                 if not block.strip():
                     continue
                 
+                # 判斷是否為摺疊標籤
                 is_match = (
                     re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
-                    block.strip() == "【對話推論完整題組】" or 
-                    block.strip() == "【附加題組問答】"
+                    block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【作業-表單01 答案解析】"]
                 )
                 
                 if is_match:
+                    # 建立新的摺疊面板
                     current_expander = st.expander(f"{block.strip()} 顯示/隱藏", expanded=False)
+                    # 只有在第一週的「完整題組」才需要渲染音檔
                     if "完整題組" in block.strip():
                         is_full_exam_block = True
                     else:
@@ -133,6 +133,7 @@ with tab1:
                 else:
                     if current_expander:
                         with current_expander:
+                            # 渲染音檔 (僅限需要音檔的區塊)
                             if is_full_exam_block:
                                 if audio_bytes:
                                     st.audio(audio_bytes, format="audio/mp3")
@@ -140,10 +141,13 @@ with tab1:
                                     st.error("⚠️ 本週聽力音檔載入失敗，請確認雲端硬碟權限是否開啟。")
                                 st.write(" ")
                             
+                            # 渲染該標籤下的文本內容
                             st.markdown(block, unsafe_allow_html=True)
                     else:
+                        # 標籤外的文本，直接顯示
                         st.markdown(block, unsafe_allow_html=True)
         else:
+            # 發生錯誤時直接顯示文本
             st.markdown(lecture_content, unsafe_allow_html=True)
         
         st.divider()

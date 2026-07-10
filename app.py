@@ -50,7 +50,7 @@ WEEK_DRIVE_IDS = {
     "第二週": {
         "title": "閱讀/詞彙語意",
         "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
-        "audio_id": "這裡填入第二週的音檔ID",
+        "audio_id": "",
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205",
         "form_url_2": "", 
         "form_url_3": "", 
@@ -60,16 +60,16 @@ WEEK_DRIVE_IDS = {
         "note_content": "本週重點在於理解上下文語意與詞根構詞後的語意變化。快速閱讀的核心技巧，先找出主詞與動詞的核心結構！" 
     },
     "第三週": {
-        "title": "口說與長篇複句 (範例預留)",
-        "file_id": "這裡填入第三週的Drive_ID",
-        "audio_id": "這裡填入第三週的音檔ID",
-        "form_url": "",
+        "title": "聽力/對話理解",
+        "file_id": "1XDvuv_bA7XrUXksfPIAJh_eu-_T_uOs9", # 已更新為最新的 ID
+        "audio_id": "", # 若後續有音檔再補上 ID
+        "form_url": "", # 尚未上傳表單，暫時留空隱藏
         "form_url_2": "",
         "form_url_3": "",
-        "form_btn_1_label": "",
+        "form_btn_1_label": "🎯 開啟 【第三週】 聽力/對話理解測驗",
         "instruction_text": "尚未上傳測驗表單，敬請期待。",
-        "note_title": "💡 口說演練重點：",
-        "note_content": "開口說就是最好的練習！本週請著重於長篇複句的語氣停頓與連接詞的使用。"
+        "note_title": "💡 聽力與對話理解攻略：",
+        "note_content": "本週重點在於掌握段落主旨與長句結構。遇到不認識的單字，嘗試從前後文推敲語意，不要停頓太久。"
     }
 }
 
@@ -102,11 +102,11 @@ with tab1:
         
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
-            audio_bytes = load_audio_from_drive(current_week_info["audio_id"])
+            audio_bytes = load_audio_from_drive(current_week_info["audio_id"]) if current_week_info.get("audio_id") else None
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
-            # 🚀 擴充正則表達式，加入第二週的專屬標籤
-            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【作業-表單01 答案解析】)'
+            # 🚀 擴充正則表達式，加入第三週可能的專屬標籤
+            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【第三週課程內容】|【作業-表單01 答案解析】)'
             blocks = re.split(pattern, lecture_content)
             
             is_full_exam_block = False
@@ -119,7 +119,7 @@ with tab1:
                 # 判斷是否為摺疊標籤
                 is_match = (
                     re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
-                    block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【作業-表單01 答案解析】"]
+                    block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【第三週課程內容】", "【作業-表單01 答案解析】"]
                 )
                 
                 if is_match:

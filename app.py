@@ -62,7 +62,11 @@ WEEK_DRIVE_IDS = {
     "第三週": {
         "title": "聽力/對話理解",
         "file_id": "1XDvuv_bA7XrUXksfPIAJh_eu-_T_uOs9", # 已更新為最新的 ID
-        "audio_id": "", # 若後續有音檔再補上 ID
+"audio_id": "", # 舊版單一音檔保留為空
+        # 🚀 新增：支援多重音檔注入
+        "audio_id_1": "1ctC9rFxHikByxtppwIy0vwfbpov6uRnu", 
+        "audio_id_2": "1tSalduXeWPsrc-DJ48uwOCoHcT3ZFCTw", 
+        "audio_id_3": "1q7qhKY4sRCeed8ShkZUeAbfGybRYD6Cc",
         "form_url": "", # 尚未上傳表單，暫時留空隱藏
         "form_url_2": "",
         "form_url_3": "",
@@ -102,10 +106,15 @@ with tab1:
         
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
+            # 支援舊版全域單一音檔 (第一週相容)
             audio_bytes = load_audio_from_drive(current_week_info["audio_id"]) if current_week_info.get("audio_id") else None
+            # 🚀 支援新版動態多重音檔 (第三週專用)
+            audio_bytes_1 = load_audio_from_drive(current_week_info.get("audio_id_1")) if current_week_info.get("audio_id_1") else None
+            audio_bytes_2 = load_audio_from_drive(current_week_info.get("audio_id_2")) if current_week_info.get("audio_id_2") else None
+            audio_bytes_3 = load_audio_from_drive(current_week_info.get("audio_id_3")) if current_week_info.get("audio_id_3") else None
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
-            # 🚀 擴充正則表達式，加入第三週可能的專屬標籤
+            # 擴充正則表達式，保留原有的標籤
             pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【第三週線上課程】|【作業-表單01 答案解析】)'
             blocks = re.split(pattern, lecture_content)
             
@@ -116,16 +125,15 @@ with tab1:
                 if not block.strip():
                     continue
                 
-                # 判斷是否為摺疊標籤
+                # 判斷是否為大標題的摺疊標籤
                 is_match = (
                     re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
                     block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【第三週線上課程】", "【作業-表單01 答案解析】"]
                 )
                 
                 if is_match:
-                    # 建立新的摺疊面板
                     current_expander = st.expander(f"{block.strip()} 顯示/隱藏", expanded=False)
-                    # 只有在第一週的「完整題組」才需要渲染音檔
+                    # 只有在第一週的「完整題組」才需要渲染頂部音檔
                     if "完整題組" in block.strip():
                         is_full_exam_block = True
                     else:
@@ -133,7 +141,7 @@ with tab1:
                 else:
                     if current_expander:
                         with current_expander:
-                            # 渲染音檔 (僅限需要音檔的區塊)
+                            # 渲染舊版全域音檔 (第一週)
                             if is_full_exam_block:
                                 if audio_bytes:
                                     st.audio(audio_bytes, format="audio/mp3")
@@ -141,8 +149,23 @@ with tab1:
                                     st.error("⚠️ 本週聽力音檔載入失敗，請確認雲端硬碟權限是否開啟。")
                                 st.write(" ")
                             
-                            # 渲染該標籤下的文本內容
-                            st.markdown(block, unsafe_allow_html=True)
+                            # 🚀 [核心升級] 動態音檔標籤解析引擎
+                            # 將文本依據您在 Google Doc 埋設的【插入音檔X】進行次級切割
+                            sub_blocks = re.split(r'(【插入音檔\d】)', block)
+                            
+                            for sub in sub_blocks:
+                                if sub == '【插入音檔1】':
+                                    if audio_bytes_1: st.audio(audio_bytes_1, format="audio/mp3")
+                                    else: st.error("⚠️ 音檔 1 載入失敗或未設定 ID")
+                                elif sub == '【插入音檔2】':
+                                    if audio_bytes_2: st.audio(audio_bytes_2, format="audio/mp3")
+                                    else: st.error("⚠️ 音檔 2 載入失敗或未設定 ID")
+                                elif sub == '【插入音檔3】':
+                                    if audio_bytes_3: st.audio(audio_bytes_3, format="audio/mp3")
+                                    else: st.error("⚠️ 音檔 3 載入失敗或未設定 ID")
+                                else:
+                                    # 正常文本渲染
+                                    st.markdown(sub, unsafe_allow_html=True)
                     else:
                         # 標籤外的文本，直接顯示
                         st.markdown(block, unsafe_allow_html=True)

@@ -70,7 +70,7 @@ WEEK_DRIVE_IDS = {
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header", # 尚未上傳表單，暫時留空隱藏
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
         "form_url_3": "",
-        "form_btn_1_label": "🎯 開啟 【第三週】 聽力/短文推論01",
+        "form_btn_1_label": "🎯 【第三週】 聽力/短文推論01 (馬蘭)",
         "instruction_text": "「聆聽短文時遇到生詞，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意架構。善用語氣轉折與上下文的語境線索來邏輯推敲。」",
         "note_title": "💡 聽力與對話理解攻略：",
         "note_content": "本週重點在於掌握段落主旨與長句結構。遇到不認識的單字，嘗試從前後文推敲語意，不要停頓太久。"
@@ -244,7 +244,7 @@ with tab3:
         # 📝 動態渲染表單02（有網址才顯示）
         if current_week_info.get("form_url_2"):
             st.link_button(
-                label=f"📝 開啟 【{selected_week_t3}】 聽力/短文推論02",
+                label=f"📝 【{selected_week_t3}】 聽力/短文推論02 (海岸)",
                 url=current_week_info["form_url_2"],
                 type="primary",
                 use_container_width=True

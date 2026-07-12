@@ -67,8 +67,8 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "1ctC9rFxHikByxtppwIy0vwfbpov6uRnu", 
         "audio_id_2": "1tSalduXeWPsrc-DJ48uwOCoHcT3ZFCTw", 
         "audio_id_3": "1q7qhKY4sRCeed8ShkZUeAbfGybRYD6Cc",
-        "form_url": "", # 尚未上傳表單，暫時留空隱藏
-        "form_url_2": "",
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header", # 尚未上傳表單，暫時留空隱藏
+        "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
         "form_url_3": "",
         "form_btn_1_label": "🎯 開啟 【第三週】 聽力/對話理解測驗",
         "instruction_text": "尚未上傳測驗表單，敬請期待。",

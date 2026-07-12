@@ -115,7 +115,7 @@ with tab1:
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
             # 🚀 擴充正則表達式：新增【W3表單測驗-短文推論】
-            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【第三週線上課程】|【作業-表單01 答案解析】|【W3表單測驗-短文推論】)'
+            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【第三週線上課程】|【作業-表單01 答案解析】|【W3L1表單測驗-短文推論】)'
             blocks = re.split(pattern, lecture_content)
             
             is_full_exam_block = False
@@ -128,7 +128,7 @@ with tab1:
                 # 🚀 判斷是否為大標題的摺疊標籤：新增【W3表單測驗-短文推論】
                 is_match = (
                     re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
-                    block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【第三週線上課程】", "【作業-表單01 答案解析】", "【W3表單測驗-短文推論】"]
+                    block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【第三週線上課程】", "【作業-表單01 答案解析】", "【W3L1表單測驗-短文推論】"]
                 )
                 
                 if is_match:

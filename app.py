@@ -244,7 +244,7 @@ with tab3:
         # 📝 動態渲染表單02（有網址才顯示）
         if current_week_info.get("form_url_2"):
             st.link_button(
-                label=f"📝 開啟 【{selected_week_t3}】 聽力練習表單02",
+                label=f"📝 開啟 【{selected_week_t3}】 聽力/短文推論02",
                 url=current_week_info["form_url_2"],
                 type="primary",
                 use_container_width=True

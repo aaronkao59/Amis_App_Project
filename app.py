@@ -173,13 +173,13 @@ with tab1:
                                 elif sub == '【插入音檔4】':
                                     if audio_bytes_4: st.audio(audio_bytes_4, format="audio/mp3")
                                     else: st.error("⚠️ 音檔 4 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔4】':
-                                    if audio_bytes_5: st.audio(audio_bytes_5, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 4 載入失敗或未設定 ID")
                                 elif sub == '【插入音檔5】':
+                                    if audio_bytes_5: st.audio(audio_bytes_5, format="audio/mp3")
+                                    else: st.error("⚠️ 音檔 5 載入失敗或未設定 ID")
+                                elif sub == '【插入音檔6】':
                                     if audio_bytes_6: st.audio(audio_bytes_6, format="audio/mp3")
                                     else: st.error("⚠️ 音檔 6 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔4】':
+                                elif sub == '【插入音檔7】':
                                     if audio_bytes_7: st.audio(audio_bytes_7, format="audio/mp3")
                                     else: st.error("⚠️ 音檔 7 載入失敗或未設定 ID")
                                 else:

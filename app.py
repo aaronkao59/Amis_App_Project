@@ -70,7 +70,7 @@ WEEK_DRIVE_IDS = {
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header", # 尚未上傳表單，暫時留空隱藏
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
         "form_url_3": "",
-        "form_btn_1_label": "🎯 開啟 【第三週】 聽力/對話理解測驗",
+        "form_btn_1_label": "🎯 開啟 【第三週】 聽力/短文推論01",
         "instruction_text": "尚未上傳測驗表單，敬請期待。",
         "note_title": "💡 聽力與對話理解攻略：",
         "note_content": "本週重點在於掌握段落主旨與長句結構。遇到不認識的單字，嘗試從前後文推敲語意，不要停頓太久。"

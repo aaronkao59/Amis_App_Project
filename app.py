@@ -67,6 +67,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "1ctC9rFxHikByxtppwIy0vwfbpov6uRnu", 
         "audio_id_2": "1tSalduXeWPsrc-DJ48uwOCoHcT3ZFCTw", 
         "audio_id_3": "1q7qhKY4sRCeed8ShkZUeAbfGybRYD6Cc",
+        "audio_id_4": "1IUfTrEFPFFxz8dVEVm3dxZHZMpA6Juh8",
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header", # 尚未上傳表單，暫時留空隱藏
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
         "form_url_3": "",
@@ -112,6 +113,7 @@ with tab1:
             audio_bytes_1 = load_audio_from_drive(current_week_info.get("audio_id_1")) if current_week_info.get("audio_id_1") else None
             audio_bytes_2 = load_audio_from_drive(current_week_info.get("audio_id_2")) if current_week_info.get("audio_id_2") else None
             audio_bytes_3 = load_audio_from_drive(current_week_info.get("audio_id_3")) if current_week_info.get("audio_id_3") else None
+            audio_bytes_4 = load_audio_from_drive(current_week_info.get("audio_id_4")) if current_week_info.get("audio_id_4") else None
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
             # 🚀 擴充正則表達式：新增【W3表單測驗-短文推論】
@@ -162,6 +164,9 @@ with tab1:
                                 elif sub == '【插入音檔3】':
                                     if audio_bytes_3: st.audio(audio_bytes_3, format="audio/mp3")
                                     else: st.error("⚠️ 音檔 3 載入失敗或未設定 ID")
+                                elif sub == '【插入音檔4】':
+                                    if audio_bytes_4: st.audio(audio_bytes_4, format="audio/mp3")
+                                    else: st.error("⚠️ 音檔 4 載入失敗或未設定 ID")
                                 else:
                                     # 正常文本渲染
                                     st.markdown(sub, unsafe_allow_html=True)
@@ -227,7 +232,7 @@ with tab3:
         st.info("✍️ 請先選取週次以獲取該週的課後練習表單。")
     else:
         current_week_info = WEEK_DRIVE_IDS[selected_week_t3]
-        st.header(f"📝 {selected_week_t3} 課後複習驗證")
+        st.header(f"📝 {selected_week_t3} 課後複習")
         st.write("點擊下方按鈕，填寫本週的線上測驗表單：")
         
         # 🎯 動態渲染表單01（有網址才顯示，並讀取自訂按鈕名稱）

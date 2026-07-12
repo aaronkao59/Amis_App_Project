@@ -9,7 +9,8 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- 🎯 遠端讀取 Google Drive 文件的函數 ---
+# --- 🎯 遠端讀取 Google Drive 文件的函數 (🚀優化：加入快取機制，降低 API 請求) ---
+@st.cache_data(show_spinner=False, ttl=3600) # 快取 1 小時
 def get_amis_drive_content(file_id):
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
     try:
@@ -24,6 +25,7 @@ def get_amis_drive_content(file_id):
 # --- 🎯 遠端下載 Google Drive 音訊二進位檔的函數 ---
 @st.cache_data(show_spinner=False)
 def load_audio_from_drive(file_id):
+    if not file_id: return None
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
     try:
         response = requests.get(download_url)
@@ -61,9 +63,8 @@ WEEK_DRIVE_IDS = {
     },
     "第三週": {
         "title": "聽力/對話理解",
-        "file_id": "1XDvuv_bA7XrUXksfPIAJh_eu-_T_uOs9", # 已更新為最新的 ID
-"audio_id": "", # 舊版單一音檔保留為空
-        # 🚀 新增：支援多重音檔注入
+        "file_id": "1XDvuv_bA7XrUXksfPIAJh_eu-_T_uOs9", 
+        "audio_id": "", 
         "audio_id_1": "1ctC9rFxHikByxtppwIy0vwfbpov6uRnu", 
         "audio_id_2": "1tSalduXeWPsrc-DJ48uwOCoHcT3ZFCTw", 
         "audio_id_3": "1q7qhKY4sRCeed8ShkZUeAbfGybRYD6Cc",
@@ -71,7 +72,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_5": "1PRAeIheoQKJaZNzSJ8LtKQGRR5zQ1MqN",
         "audio_id_6": "1tQ4Gesc0-BeBFTklSM0icbbt_d8BS6RF",
         "audio_id_7": "1xXvtEKQiH0ZNgfdQsQpQzOlpkZ6T3EJc",
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header", # 尚未上傳表單，暫時留空隱藏
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header",
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第三週】 聽力/短文推論01 (馬蘭)",
@@ -85,7 +86,6 @@ WEEK_DRIVE_IDS = {
 st.title("🎓 阿美語高級認證班")
 st.divider()
 
-# 劃分三個分頁標籤（每週教材、使用音訊、課後練習）
 tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊", "✍️ 課後練習"])
 
 # =================================================================
@@ -110,92 +110,70 @@ with tab1:
         
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
-            # 支援舊版全域單一音檔 (第一週相容)
-            audio_bytes = load_audio_from_drive(current_week_info["audio_id"]) if current_week_info.get("audio_id") else None
-            # 🚀 支援新版動態多重音檔 (第三週專用)
-            audio_bytes_1 = load_audio_from_drive(current_week_info.get("audio_id_1")) if current_week_info.get("audio_id_1") else None
-            audio_bytes_2 = load_audio_from_drive(current_week_info.get("audio_id_2")) if current_week_info.get("audio_id_2") else None
-            audio_bytes_3 = load_audio_from_drive(current_week_info.get("audio_id_3")) if current_week_info.get("audio_id_3") else None
-            audio_bytes_4 = load_audio_from_drive(current_week_info.get("audio_id_4")) if current_week_info.get("audio_id_4") else None
-            audio_bytes_5 = load_audio_from_drive(current_week_info.get("audio_id_5")) if current_week_info.get("audio_id_5") else None
-            audio_bytes_6 = load_audio_from_drive(current_week_info.get("audio_id_6")) if current_week_info.get("audio_id_6") else None
-            audio_bytes_7 = load_audio_from_drive(current_week_info.get("audio_id_7")) if current_week_info.get("audio_id_7") else None
+            
+            # 🚀 優化：動態批次加載本週所有設定的音檔，裝入字典中
+            audio_cache = {}
+            for key, file_id in current_week_info.items():
+                if key.startswith("audio_id") and file_id: # 捕捉 audio_id, audio_id_1, audio_id_2...
+                    audio_cache[key] = load_audio_from_drive(file_id)
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
-            # 🚀 擴充正則表達式：新增【W3表單測驗-短文推論】
-            pattern = r'(【對話\s*t\d+-\d+-\d+】|【對話推論完整題組】|【附加題組問答】|【第二週課程內容】|【第三週線上課程】|【作業-表單01 答案解析】|【W3L1表單測驗-短文推論】|【W3L2表單測驗-短文推論】)'
+            # 摺疊面板的觸發標籤庫 (方便後續擴充維護)
+            expander_tags = [
+                "【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", 
+                "【第三週線上課程】", "【作業-表單01 答案解析】", 
+                "【W3L1表單測驗-短文推論】", "【W3L2表單測驗-短文推論】"
+            ]
+            
+            # 依照所有標籤與對話區塊進行切割
+            pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'
             blocks = re.split(pattern, lecture_content)
             
             is_full_exam_block = False
             current_expander = None
             
             for block in blocks:
-                if not block.strip():
-                    continue
+                if not block.strip(): continue
                 
-                # 🚀 判斷是否為大標題的摺疊標籤：新增【W3表單測驗-短文推論】
-                is_match = (
-                    re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or 
-                    block.strip() in ["【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", "【第三週線上課程】", "【作業-表單01 答案解析】", "【W3L1表單測驗-短文推論】", "【W3L2表單測驗-短文推論】"]
-                )
+                # 判斷是否為大標題摺疊標籤
+                is_match = re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or (block.strip() in expander_tags)
                 
                 if is_match:
                     current_expander = st.expander(f"{block.strip()} 顯示/隱藏", expanded=False)
-                    # 只有在第一週的「完整題組」才需要渲染頂部音檔
-                    if "完整題組" in block.strip():
-                        is_full_exam_block = True
-                    else:
-                        is_full_exam_block = False
+                    is_full_exam_block = ("完整題組" in block.strip())
                 else:
                     if current_expander:
                         with current_expander:
                             # 渲染舊版全域音檔 (第一週)
                             if is_full_exam_block:
-                                if audio_bytes:
-                                    st.audio(audio_bytes, format="audio/mp3")
+                                if audio_cache.get("audio_id"):
+                                    st.audio(audio_cache["audio_id"], format="audio/mp3")
                                 else:
                                     st.error("⚠️ 本週聽力音檔載入失敗，請確認雲端硬碟權限是否開啟。")
                                 st.write(" ")
                             
-                            # 動態音檔標籤解析引擎
-                            sub_blocks = re.split(r'(【插入音檔\d】)', block)
-                            
+                            # 🚀 優化：動態音檔標籤解析引擎 (智慧萃取數字並渲染)
+                            sub_blocks = re.split(r'(【插入音檔\d+】)', block)
                             for sub in sub_blocks:
-                                if sub == '【插入音檔1】':
-                                    if audio_bytes_1: st.audio(audio_bytes_1, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 1 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔2】':
-                                    if audio_bytes_2: st.audio(audio_bytes_2, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 2 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔3】':
-                                    if audio_bytes_3: st.audio(audio_bytes_3, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 3 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔4】':
-                                    if audio_bytes_4: st.audio(audio_bytes_4, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 4 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔5】':
-                                    if audio_bytes_5: st.audio(audio_bytes_5, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 5 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔6】':
-                                    if audio_bytes_6: st.audio(audio_bytes_6, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 6 載入失敗或未設定 ID")
-                                elif sub == '【插入音檔7】':
-                                    if audio_bytes_7: st.audio(audio_bytes_7, format="audio/mp3")
-                                    else: st.error("⚠️ 音檔 7 載入失敗或未設定 ID")
+                                audio_match = re.match(r'【插入音檔(\d+)】', sub)
+                                if audio_match:
+                                    audio_num = audio_match.group(1) # 抓出數字，如 '1', '7'
+                                    cache_key = f"audio_id_{audio_num}"
+                                    audio_data = audio_cache.get(cache_key)
+                                    
+                                    if audio_data:
+                                        st.audio(audio_data, format="audio/mp3")
+                                    else:
+                                        st.error(f"⚠️ 音檔 {audio_num} 載入失敗或未設定對應的 ID")
                                 else:
-                                    # 正常文本渲染
                                     st.markdown(sub, unsafe_allow_html=True)
                     else:
-                        # 標籤外的文本，直接顯示
                         st.markdown(block, unsafe_allow_html=True)
         else:
-            # 發生錯誤時直接顯示文本
             st.markdown(lecture_content, unsafe_allow_html=True)
         
         st.divider()
         st.markdown("### 🎯 記事")
-        
-        # 動態讀取並渲染每週專屬的記事內容
         note_title = current_week_info.get("note_title", "💡 學習重點：")
         note_content = current_week_info.get("note_content", "請持續累積實力，完成本週進度！")
         
@@ -250,37 +228,21 @@ with tab3:
         st.header(f"📝 {selected_week_t3} 課後複習")
         st.write("點擊下方按鈕，填寫本週的線上測驗表單：")
         
-        # 🎯 動態渲染表單01（有網址才顯示，並讀取自訂按鈕名稱）
         if current_week_info.get("form_url"):
             btn_label_1 = current_week_info.get("form_btn_1_label", f"🎯 開啟 【{selected_week_t3}】 練習表單01")
-            st.link_button(
-                label=btn_label_1,
-                url=current_week_info["form_url"],
-                type="primary",
-                use_container_width=True
-            )
+            st.link_button(label=btn_label_1, url=current_week_info["form_url"], type="primary", use_container_width=True)
             st.write(" ") 
         
-        # 📝 動態渲染表單02（有網址才顯示）
         if current_week_info.get("form_url_2"):
-            st.link_button(
-                label=f"📝 【{selected_week_t3}】 聽力/短文推論02 (海岸)",
-                url=current_week_info["form_url_2"],
-                type="primary",
-                use_container_width=True
-            )
+            # 支援動態讀取第二按鈕名稱，若無則提供預設
+            btn_label_2 = current_week_info.get("form_btn_2_label", f"📝 【{selected_week_t3}】 聽力/短文推論02 (海岸)")
+            st.link_button(label=btn_label_2, url=current_week_info["form_url_2"], type="primary", use_container_width=True)
             st.write(" ") 
 
-        # 🚀 動態渲染表單03（有網址才顯示）
         if current_week_info.get("form_url_3"):
-            st.link_button(
-                label=f"🚀 開啟 【{selected_week_t3}】 聽力練習表單03",
-                url=current_week_info["form_url_3"],
-                type="primary",
-                use_container_width=True
-            )
+            btn_label_3 = current_week_info.get("form_btn_3_label", f"🚀 開啟 【{selected_week_t3}】 聽力練習表單03")
+            st.link_button(label=btn_label_3, url=current_week_info["form_url_3"], type="primary", use_container_width=True)
         
-        # 動態讀取每週專屬說明文字
         instruction = current_week_info.get("instruction_text", "請依循表單內的指示完成測驗。")
         
         st.markdown(f"""

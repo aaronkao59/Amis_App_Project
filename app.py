@@ -82,7 +82,7 @@ WEEK_DRIVE_IDS = {
     },
     "第四週": {
         "title": "翻譯/翻譯實戰",
-        "file_id": "", # ⚠️ 請在此填寫第四週講義的 Google Doc ID
+        "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", # 
         "audio_id": "", 
         "form_url": "", # ⚠️ 請在此填寫第四週表單 1 的網址
         "form_url_2": "", 

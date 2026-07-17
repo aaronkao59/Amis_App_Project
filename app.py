@@ -79,6 +79,18 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "「聆聽短文時遇到生詞，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意架構。善用語氣轉折與上下文的語境線索來邏輯推敲。」",
         "note_title": "💡 聽力與對話理解攻略：",
         "note_content": "本週重點在於掌握段落主旨與長句結構。遇到不認識的單字，嘗試從前後文推敲語意，不要停頓太久。"
+    },
+    "第四週": {
+        "title": "翻譯/翻譯實戰",
+        "file_id": "", # ⚠️ 請在此填寫第四週講義的 Google Doc ID
+        "audio_id": "", 
+        "form_url": "", # ⚠️ 請在此填寫第四週表單 1 的網址
+        "form_url_2": "", 
+        "form_url_3": "",
+        "form_btn_1_label": "🎯 【第四週】 翻譯實戰測驗01",
+        "instruction_text": "進行翻譯實戰時，切勿使用中文 SVO 語序硬套，請優先確定阿美語的「動詞焦點」與「核心主詞」。",
+        "note_title": "💡 翻譯與結構攻略：",
+        "note_content": "本週重點在於『信、達、雅』的轉換。拆解長句時，請善用格位標記 (Ko, To, No) 來釐清字詞關係，保持句法清晰。"
     }
 }
 
@@ -118,11 +130,12 @@ with tab1:
                     audio_cache[key] = load_audio_from_drive(file_id)
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
-            # 摺疊面板的觸發標籤庫 (方便後續擴充維護)
+            # 🚀 摺疊面板的觸發標籤庫 (加入第四週預設標籤)
             expander_tags = [
                 "【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", 
                 "【第三週線上課程】", "【作業-表單01 答案解析】", 
-                "【W3L1表單測驗-短文推論】", "【W3L2表單測驗-短文推論】"
+                "【W3L1表單測驗-短文推論】", "【W3L2表單測驗-短文推論】",
+                "【第四週課程內容】", "【翻譯實戰練習】"
             ]
             
             # 依照所有標籤與對話區塊進行切割
@@ -234,13 +247,12 @@ with tab3:
             st.write(" ") 
         
         if current_week_info.get("form_url_2"):
-            # 支援動態讀取第二按鈕名稱，若無則提供預設
-            btn_label_2 = current_week_info.get("form_btn_2_label", f"📝 【{selected_week_t3}】 聽力/短文推論02 (海岸)")
+            btn_label_2 = current_week_info.get("form_btn_2_label", f"📝 【{selected_week_t3}】 練習表單02")
             st.link_button(label=btn_label_2, url=current_week_info["form_url_2"], type="primary", use_container_width=True)
             st.write(" ") 
 
         if current_week_info.get("form_url_3"):
-            btn_label_3 = current_week_info.get("form_btn_3_label", f"🚀 開啟 【{selected_week_t3}】 聽力練習表單03")
+            btn_label_3 = current_week_info.get("form_btn_3_label", f"🚀 開啟 【{selected_week_t3}】 練習表單03")
             st.link_button(label=btn_label_3, url=current_week_info["form_url_3"], type="primary", use_container_width=True)
         
         instruction = current_week_info.get("instruction_text", "請依循表單內的指示完成測驗。")

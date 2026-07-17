@@ -9,10 +9,9 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- 🎯 遠端讀取 Google Drive 文件的函數 ---
-@st.cache_data(show_spinner=False, ttl=3600)
+# --- 🎯 遠端讀取 Google Drive 文件的函數 (🚀優化：加入快取機制，降低 API 請求) ---
+@st.cache_data(show_spinner=False, ttl=3600) # 快取 1 小時
 def get_amis_drive_content(file_id):
-    if not file_id: return ""
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
     try:
         response = requests.get(download_url)
@@ -31,7 +30,7 @@ def load_audio_from_drive(file_id):
     try:
         response = requests.get(download_url)
         if response.status_code == 200:
-            return response.content
+            return response.content # 傳回純二進位音訊流
     except Exception:
         return None
     return None
@@ -83,17 +82,12 @@ WEEK_DRIVE_IDS = {
     },
     "第四週": {
         "title": "翻譯/翻譯實戰",
-        "file_id": "", 
-        "audio_id": "",
-        "audio_id_1": "", 
-        "audio_id_2": "", 
-        "audio_id_3": "",
-        "form_url": "", 
+        "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", # ⚠️ 請在此填寫第四週講義的 Google Doc ID
+        "audio_id": "", 
+        "form_url": "", # ⚠️ 請在此填寫第四週表單 1 的網址
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第四週】 翻譯實戰測驗01",
-        "form_btn_2_label": "📝 【第四週】 翻譯實戰測驗02",
-        "form_btn_3_label": "🚀 【第四週】 翻譯實戰測驗03",
         "instruction_text": "進行翻譯實戰時，切勿使用中文 SVO 語序硬套，請優先確定阿美語的「動詞焦點」與「核心主詞」。",
         "note_title": "💡 翻譯與結構攻略：",
         "note_content": "本週重點在於『信、達、雅』的轉換。拆解長句時，請善用格位標記 (Ko, To, No) 來釐清字詞關係，保持句法清晰。"
@@ -129,12 +123,14 @@ with tab1:
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
             
+            # 🚀 優化：動態批次加載本週所有設定的音檔，裝入字典中
             audio_cache = {}
             for key, file_id in current_week_info.items():
-                if key.startswith("audio_id") and file_id:
+                if key.startswith("audio_id") and file_id: # 捕捉 audio_id, audio_id_1, audio_id_2...
                     audio_cache[key] = load_audio_from_drive(file_id)
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
+            # 🚀 摺疊面板的觸發標籤庫 (加入第四週預設標籤)
             expander_tags = [
                 "【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", 
                 "【第三週線上課程】", "【作業-表單01 答案解析】", 
@@ -142,6 +138,7 @@ with tab1:
                 "【第四週課程內容】", "【翻譯實戰練習】"
             ]
             
+            # 依照所有標籤與對話區塊進行切割
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'
             blocks = re.split(pattern, lecture_content)
             
@@ -151,6 +148,7 @@ with tab1:
             for block in blocks:
                 if not block.strip(): continue
                 
+                # 判斷是否為大標題摺疊標籤
                 is_match = re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or (block.strip() in expander_tags)
                 
                 if is_match:
@@ -159,6 +157,7 @@ with tab1:
                 else:
                     if current_expander:
                         with current_expander:
+                            # 渲染舊版全域音檔 (第一週)
                             if is_full_exam_block:
                                 if audio_cache.get("audio_id"):
                                     st.audio(audio_cache["audio_id"], format="audio/mp3")
@@ -166,11 +165,12 @@ with tab1:
                                     st.error("⚠️ 本週聽力音檔載入失敗，請確認雲端硬碟權限是否開啟。")
                                 st.write(" ")
                             
+                            # 🚀 優化：動態音檔標籤解析引擎 (智慧萃取數字並渲染)
                             sub_blocks = re.split(r'(【插入音檔\d+】)', block)
                             for sub in sub_blocks:
                                 audio_match = re.match(r'【插入音檔(\d+)】', sub)
                                 if audio_match:
-                                    audio_num = audio_match.group(1)
+                                    audio_num = audio_match.group(1) # 抓出數字，如 '1', '7'
                                     cache_key = f"audio_id_{audio_num}"
                                     audio_data = audio_cache.get(cache_key)
                                     

@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import re
+import datetime
 
 # --- 頁面系統設定 ---
 st.set_page_config(
@@ -71,7 +72,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_4": "1IUfTrEFPFFxz8dVEVm3dxZHZMpA6Juh8",
         "audio_id_5": "1PRAeIheoQKJaZNzSJ8LtKQGRR5zQ1MqN",
         "audio_id_6": "1tQ4Gesc0-BeBFTklSM0icbbt_d8BS6RF",
-        "audio_id_7": "1AcANq8Du1hNnaxrFrbj_SXmzZrS74Hq5",
+        "audio_id_7": "1xXvtEKQiH0ZNgfdQsQpQzOlpkZ6T3EJc",
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header",
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
         "form_url_3": "",
@@ -82,9 +83,9 @@ WEEK_DRIVE_IDS = {
     },
     "第四週": {
         "title": "翻譯/翻譯實戰",
-        "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", # ⚠️ 請在此填寫第四週講義的 Google Doc ID
+        "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", 
         "audio_id": "", 
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header", # ⚠️ 請在此填寫第四週表單 1 的網址
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第四週】 翻譯實戰測驗01",
@@ -95,7 +96,20 @@ WEEK_DRIVE_IDS = {
 }
 
 # --- 前端視覺渲染層 ---
-st.title("🎓 阿美語高級認證班")
+exam_date = datetime.date(2026, 12, 5) 
+today = datetime.date.today()
+days_left = (exam_date - today).days
+countdown_text = f"倒數 {days_left} 天" if days_left > 0 else "考試進行中"
+
+st.markdown(f"""
+<div style='display: flex; align-items: center; gap: 20px; margin-bottom: 0.5rem;'>
+    <h1 style='margin: 0; padding: 0;'>🎓 阿美語高級認證班</h1>
+    <div style='border: 2px solid #FF8C00; color: #FF8C00; font-weight: bold; font-size: 1.8rem; padding: 4px 16px; border-radius: 12px; white-space: nowrap;'>
+        {countdown_text}
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 st.divider()
 
 tab1, tab2, tab3 = st.tabs(["📖 每週線上教材", "🎵 課堂使用音訊", "✍️ 課後練習"])
@@ -126,7 +140,7 @@ with tab1:
             # 🚀 優化：動態批次加載本週所有設定的音檔，裝入字典中
             audio_cache = {}
             for key, file_id in current_week_info.items():
-                if key.startswith("audio_id") and file_id: # 捕捉 audio_id, audio_id_1, audio_id_2...
+                if key.startswith("audio_id") and file_id: 
                     audio_cache[key] = load_audio_from_drive(file_id)
         
         if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
@@ -170,7 +184,7 @@ with tab1:
                             for sub in sub_blocks:
                                 audio_match = re.match(r'【插入音檔(\d+)】', sub)
                                 if audio_match:
-                                    audio_num = audio_match.group(1) # 抓出數字，如 '1', '7'
+                                    audio_num = audio_match.group(1) 
                                     cache_key = f"audio_id_{audio_num}"
                                     audio_data = audio_cache.get(cache_key)
                                     
@@ -265,3 +279,4 @@ with tab3:
             </p>
         </div>
         """, unsafe_allow_html=True)
+```[cite: 2]

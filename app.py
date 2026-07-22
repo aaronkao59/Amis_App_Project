@@ -13,7 +13,7 @@ st.set_page_config(
 # --- 🎯 遠端讀取 Google Drive 文件的函數 ---
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_amis_drive_content(file_id):
-    download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
+    download_url = f"[https://docs.google.com/uc?export=download&id=](https://docs.google.com/uc?export=download&id=){file_id}"
     try:
         response = requests.get(download_url)
         if response.status_code == 200:
@@ -27,7 +27,7 @@ def get_amis_drive_content(file_id):
 @st.cache_data(show_spinner=False)
 def load_audio_from_drive(file_id):
     if not file_id: return None
-    download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
+    download_url = f"[https://docs.google.com/uc?export=download&id=](https://docs.google.com/uc?export=download&id=){file_id}"
     try:
         response = requests.get(download_url)
         if response.status_code == 200:
@@ -42,9 +42,9 @@ WEEK_DRIVE_IDS = {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
         "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog",
-        "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205",
-        "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6",
+        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog](https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog)",
+        "form_url_2": "[https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205](https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205)",
+        "form_url_3": "[https://forms.gle/qtRzxtMX5rD42KhA6](https://forms.gle/qtRzxtMX5rD42KhA6)",
         "form_btn_1_label": "🎯 開啟 【第一週】 聽力練習表單01",
         "instruction_text": "若要閱讀題組的族語文字，可在 Google 表單內點選「音檔」連結，聆聽音檔的頁面中，打開「註解」即可。建議盡可能答完題再看",
         "note_title": "💡 高級認證聽力破關公式：",
@@ -54,7 +54,7 @@ WEEK_DRIVE_IDS = {
         "title": "閱讀/詞彙語意",
         "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
         "audio_id": "",
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205",
+        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205](https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205)",
         "form_url_2": "", 
         "form_url_3": "", 
         "form_btn_1_label": "🎯 開啟 【第二週】 閱讀與詞彙測驗01", 
@@ -73,8 +73,8 @@ WEEK_DRIVE_IDS = {
         "audio_id_5": "1PRAeIheoQKJaZNzSJ8LtKQGRR5zQ1MqN",
         "audio_id_6": "1tQ4Gesc0-BeBFTklSM0icbbt_d8BS6RF",
         "audio_id_7": "1xXvtEKQiH0ZNgfdQsQpQzOlpkZ6T3EJc",
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header",
-        "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header",
+        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header)",
+        "form_url_2": "[https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header)",
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第三週】 聽力/短文推論01 (馬蘭)",
         "instruction_text": "「聆聽短文時遇到生詞，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意架構。善用語氣轉折與上下文的語境線索來邏輯推敲。」",
@@ -85,7 +85,7 @@ WEEK_DRIVE_IDS = {
         "title": "翻譯/翻譯實戰",
         "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", 
         "audio_id": "", 
-        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header", 
+        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第四週】 翻譯實戰測驗01",
@@ -273,4 +273,3 @@ with tab3:
             </p>
         </div>
         """, unsafe_allow_html=True)
-```[cite: 2]

@@ -45,7 +45,7 @@ WEEK_DRIVE_IDS = {
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog",
         "form_url_2": "https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205",
         "form_url_3": "https://forms.gle/qtRzxtMX5rD42KhA6",
-        "form_btn_1_label": "🎯 開啟 【第一週】 聽力練習表單01",
+        "form_btn_1_label": "🎯 【第一週】 練習表單01",
         "instruction_text": "若要閱讀題組的族語文字，可在 Google 表單內點選「音檔」連結，聆聽音檔的頁面中，打開「註解」即可。建議盡可能答完題再看",
         "note_title": "💡 高級認證聽力破關公式：",
         "note_content": "高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。"
@@ -250,7 +250,7 @@ with tab3:
         st.write("點擊下方按鈕，填寫本週的線上測驗表單：")
         
         if current_week_info.get("form_url"):
-            btn_label_1 = current_week_info.get("form_btn_1_label", f"🎯 開啟 【{selected_week_t3}】 練習表單01")
+            btn_label_1 = current_week_info.get("form_btn_1_label", f"🎯 【{selected_week_t3}】 練習表單01")
             st.link_button(label=btn_label_1, url=current_week_info["form_url"], type="primary", use_container_width=True)
             st.write(" ") 
         
@@ -260,7 +260,7 @@ with tab3:
             st.write(" ") 
 
         if current_week_info.get("form_url_3"):
-            btn_label_3 = current_week_info.get("form_btn_3_label", f"🚀 開啟 【{selected_week_t3}】 練習表單03")
+            btn_label_3 = current_week_info.get("form_btn_3_label", f"🚀 【{selected_week_t3}】 練習表單03")
             st.link_button(label=btn_label_3, url=current_week_info["form_url_3"], type="primary", use_container_width=True)
         
         instruction = current_week_info.get("instruction_text", "請依循表單內的指示完成測驗。")

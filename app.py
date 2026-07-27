@@ -7,7 +7,7 @@ import datetime
 st.set_page_config(
     page_title="阿美語高級認證班 | 雲端衝刺系統",
     page_icon="🎓",
-    layout="centered"
+    layout="wide"
 )
 
 # --- 🎯 遠端讀取 Google Drive 文件的函數 ---

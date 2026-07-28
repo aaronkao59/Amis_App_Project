@@ -98,7 +98,7 @@ WEEK_DRIVE_IDS = {
         "title": "聽力/對話推論",
         "file_id": "1ZPiNTHyPyUo-wDzA7KMt_2RMwGfvGQ5R", # ⚠️ 請在此填寫第五週講義的 Google Doc ID
         "audio_id": "",
-        "audio_id_1": "", 
+        "audio_id_1": "1ZLBydyMysVJnmC1X33yxQcyKEJds3KRO", 
         "audio_id_2": "", 
         "audio_id_3": "",
         "form_url": "", # ⚠️ 請在此填寫第五週表單 1 的網址

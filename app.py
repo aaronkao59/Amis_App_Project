@@ -121,9 +121,12 @@ days_left = (exam_date - today).days
 countdown_text = f"倒數 {days_left} 天" if days_left > 0 else "考試進行中"
 
 st.markdown(f"""
-<div style='display: flex; align-items: center; gap: 20px; margin-bottom: 0.5rem;'>
-    <h1 style='margin: 0; padding: 0;'>🎓 阿美語高級認證班</h1>
-    <div style='border: 2px solid #1E88E5; color: #1E88E5; font-weight: bold; font-size: 1.8rem; padding: 4px 16px; border-radius: 12px; white-space: nowrap;'>
+<div style='display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 0.5rem;'>
+    <div style='display: flex; flex-direction: column; gap: 4px; min-width: 280px;'>
+        <h1 style='margin: 0; padding: 0; font-size: 1.8rem; line-height: 1.2;'>🎓 高級認證班</h1>
+        <span style='color: #888888; font-size: 1.05rem; font-weight: 500; margin-left: 2.6rem;'>海岸、馬蘭阿美語</span>
+    </div>
+    <div style='border: 2px solid #1E88E5; color: #1E88E5; font-weight: bold; font-size: 1.4rem; padding: 4px 16px; border-radius: 12px; white-space: nowrap;'>
         {countdown_text}
     </div>
 </div>

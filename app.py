@@ -13,7 +13,6 @@ st.set_page_config(
 # --- 🎯 遠端讀取 Google Drive 文件的函數 ---
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_amis_drive_content(file_id):
-    if not file_id: return ""
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
     try:
         response = requests.get(download_url)
@@ -93,24 +92,6 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "進行翻譯實戰時，切勿使用中文 SVO 語序硬套，請優先確定阿美語的「動詞焦點」與「核心主詞」。",
         "note_title": "💡 翻譯與結構攻略：",
         "note_content": "本週重點在於『信、達、雅』的轉換。拆解長句時，請善用格位標記 (ko, to, no) 來釐清字詞關係，保持句法清晰。熟記sapi-、saka-等前綴詞的翻法"
-    },
-    "第五週": {
-        "title": "聽力/對話推論",
-        "file_id": "1ZPiNTHyPyUo-wDzA7KMt_2RMwGfvGQ5R", # ⚠️ 請在此填寫第五週講義的 Google Doc ID
-        "audio_id": "",
-        "audio_id_1": "1ZLBydyMysVJnmC1X33yxQcyKEJds3KRO", 
-        "audio_id_2": "1iyqHLnDpXVY1CWGPO4-apU9Zlxj-Sbvq", 
-        "audio_id_3": "10VpppsmPZv_EzeUUv0f8qkBlZGB7KJdz",
-        "audio_id_4": "1ZdWNrWPgnqpjxcoXXRAd78hYV-pXquLe",
-        "form_url": "", # ⚠️ 請在此填寫第五週表單 1 的網址
-        "form_url_2": "", 
-        "form_url_3": "",
-        "form_btn_1_label": "🎯 【第五週】 對話推論測驗01",
-        "form_btn_2_label": "📝 【第五週】 對話推論測驗02",
-        "form_btn_3_label": "🚀 【第五週】 對話推論測驗03",
-        "instruction_text": "聆聽對話音檔時若遇到生詞切勿慌張卡頓，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意骨架。接著請善用語氣轉折進行邏輯推敲。",
-        "note_title": "💡 對話推論聽力攻略：",
-        "note_content": "高級聽力考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。關鍵往往藏在說話者的情緒起伏與首尾句中。"
     }
 }
 
@@ -122,7 +103,10 @@ countdown_text = f"倒數 {days_left} 天" if days_left > 0 else "考試進行�
 
 st.markdown(f"""
 <div style='display: flex; align-items: center; gap: 20px; margin-bottom: 0.5rem;'>
-    <h1 style='margin: 0; padding: 0;'>🎓 阿美語高級認證班</h1>
+    <div style='display: flex; flex-direction: column;'>
+        <h1 style='margin: 0; padding: 0;'>🎓 高級認證班</h1>
+        <span style='color: #888888; font-size: 1.1rem; margin-top: 4px; margin-left: 54px; font-weight: 500;'>海岸、馬蘭阿美語</span>
+    </div>
     <div style='border: 2px solid #1E88E5; color: #1E88E5; font-weight: bold; font-size: 1.8rem; padding: 4px 16px; border-radius: 12px; white-space: nowrap;'>
         {countdown_text}
     </div>
@@ -166,8 +150,7 @@ with tab1:
                 "【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", 
                 "【第三週線上課程】", "【作業-表單01 答案解析】", 
                 "【W3L1表單測驗-短文推論】", "【W3L2表單測驗-短文推論】",
-                "【第四週線上課程】", "【翻譯實戰練習】",
-                "【第五週線上課程】", "【第五週測驗解析】"
+                "【第四週線上課程】", "【翻譯實戰練習】"
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'

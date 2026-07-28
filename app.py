@@ -151,7 +151,7 @@ with tab1:
     
     if selected_week == "請選擇":
         st.write(" ")
-        st.info("💡 請點擊上方「📅 選擇複習週次」按鈕，並選取您要複習的週次以顯示教材內容。")
+        st.info("💡 點擊「📅 選擇複習週次」按鈕，選取週次以顯示教材內容。")
     else:
         current_week_info = WEEK_DRIVE_IDS[selected_week]
         st.header(f"📘 {current_week_info['title']}")

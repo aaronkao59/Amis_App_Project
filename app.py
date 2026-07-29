@@ -120,7 +120,7 @@ taipei_tz = datetime.timezone(datetime.timedelta(hours=8))
 exam_date = datetime.date(2026, 12, 5) 
 today = datetime.datetime.now(taipei_tz).date()
 days_left = (exam_date - today).days
-countdown_text = f"倒數 {days_left} 天" if days_left > 0 else "考試進行中"
+countdown_text = f"倒數{days_left}天" if days_left > 0 else "考試進行中"
 
 st.markdown(f"""
 <div style='display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 0.5rem;'>

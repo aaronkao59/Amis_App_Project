@@ -95,7 +95,7 @@ WEEK_DRIVE_IDS = {
         "note_content": "本週重點在於『信、達、雅』的轉換。拆解長句時，請善用格位標記 (ko, to, no) 來釐清字詞關係，保持句法清晰。熟記sapi-、saka-等前綴詞的翻法"
     },
     "第五週": {
-        "title": "聽力/對話推論",
+        "title": "聽力/對話理解",
         "file_id": "1ZPiNTHyPyUo-wDzA7KMt_2RMwGfvGQ5R", 
         "audio_id": "",
         "audio_id_1": "1ZLBydyMysVJnmC1X33yxQcyKEJds3KRO", 
@@ -172,7 +172,7 @@ with tab1:
                 "【第三週線上課程】", "【作業-表單01 答案解析】", 
                 "【W3L1表單測驗-短文推論】", "【W3L2表單測驗-短文推論】",
                 "【第四週線上課程】", "【翻譯實戰練習】",
-                "【第五週線上課程】", "【第五週測驗解析】"
+                "【第五週線上課程】", "【W5L1聽力-對話理解】"
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'

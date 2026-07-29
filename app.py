@@ -96,13 +96,13 @@ WEEK_DRIVE_IDS = {
     },
     "第五週": {
         "title": "聽力/對話推論",
-        "file_id": "1ZPiNTHyPyUo-wDzA7KMt_2RMwGfvGQ5R", # ⚠️ 請在此填寫第五週講義的 Google Doc ID
+        "file_id": "1ZPiNTHyPyUo-wDzA7KMt_2RMwGfvGQ5R", 
         "audio_id": "",
         "audio_id_1": "1ZLBydyMysVJnmC1X33yxQcyKEJds3KRO", 
         "audio_id_2": "1iyqHLnDpXVY1CWGPO4-apU9Zlxj-Sbvq", 
         "audio_id_3": "10VpppsmPZv_EzeUUv0f8qkBlZGB7KJdz",
         "audio_id_4": "1ZdWNrWPgnqpjxcoXXRAd78hYV-pXquLe",
-        "form_url": "", # ⚠️ 請在此填寫第五週表單 1 的網址
+        "form_url": "", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第五週】 對話推論測驗01",
@@ -115,8 +115,10 @@ WEEK_DRIVE_IDS = {
 }
 
 # --- 前端視覺渲染層 ---
+# 🚀 優化：強制設定為台北時間 (UTC+8) 避免雲端伺服器時差問題
+taipei_tz = datetime.timezone(datetime.timedelta(hours=8))
 exam_date = datetime.date(2026, 12, 5) 
-today = datetime.date.today()
+today = datetime.datetime.now(taipei_tz).date()
 days_left = (exam_date - today).days
 countdown_text = f"倒數 {days_left} 天" if days_left > 0 else "考試進行中"
 

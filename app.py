@@ -127,8 +127,8 @@ WEEK_DRIVE_IDS = {
         "form_url_2": "【請填寫表單2 URL，若無請留空】", 
         "form_url_3": "【請填寫表單3 URL，若無請留空】",
         "form_btn_1_label": "🎯 【第六週】族語翻譯PC_01",
-        "form_btn_2_label": "📝 W6L2【請填寫測驗名稱】",
-        "form_btn_3_label": "🚀 W6L3【請填寫測驗名稱】",
+        "form_btn_2_label": "",
+        "form_btn_3_label": "",
         "instruction_text": "【請填寫本週測驗指示與注意事項】",
         "note_title": "💡 【請填寫本週重點標題】：",
         "note_content": "【請填寫本週重點攻略與提示】"

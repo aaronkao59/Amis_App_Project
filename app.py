@@ -129,7 +129,7 @@ WEEK_DRIVE_IDS = {
         "form_btn_1_label": "🎯 【第六週】族語翻譯PC_01",
         "form_btn_2_label": "",
         "form_btn_3_label": "",
-        "instruction_text": "【請填寫本週測驗指示與注意事項】",
+        "instruction_text": "透過前綴與語氣轉折，將族語中立體的情境畫面，重組成通順的中文脈絡。】",
         "note_title": "💡 拆解詞綴邏輯，譯出語境的動態：",
         "note_content": "「單字只是零件，核心在於透過前綴與語氣轉折，將族語中立體的情境畫面，重組成通順的中文脈絡。」"
     }

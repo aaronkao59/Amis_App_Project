@@ -115,6 +115,23 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "聆聽對話音檔時若遇到生詞切勿慌張卡頓，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意骨架。接著請善用語氣轉折進行邏輯推敲。",
         "note_title": "💡 對話推論聽力攻略：",
         "note_content": "高級聽力考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。關鍵往往藏在說話者的情緒起伏與首尾句中。"
+    },
+    "第六週": {
+        "title": "寫作/族語翻譯",
+        "file_id": "【請填寫教材的Google Drive File ID】", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSe1ufpeCJc6UyriK0u3W5DrmCoHXV8I97lj9YmYg5e1lEaRHg/viewform?usp=header", 
+        "form_url_2": "【請填寫表單2 URL，若無請留空】", 
+        "form_url_3": "【請填寫表單3 URL，若無請留空】",
+        "form_btn_1_label": "🎯 【第六週】族語翻譯PC_01",
+        "form_btn_2_label": "📝 W6L2【請填寫測驗名稱】",
+        "form_btn_3_label": "🚀 W6L3【請填寫測驗名稱】",
+        "instruction_text": "【請填寫本週測驗指示與注意事項】",
+        "note_title": "💡 【請填寫本週重點標題】：",
+        "note_content": "【請填寫本週重點攻略與提示】"
     }
 }
 

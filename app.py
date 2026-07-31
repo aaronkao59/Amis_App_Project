@@ -130,8 +130,8 @@ WEEK_DRIVE_IDS = {
         "form_btn_2_label": "",
         "form_btn_3_label": "",
         "instruction_text": "【請填寫本週測驗指示與注意事項】",
-        "note_title": "💡 【請填寫本週重點標題】：",
-        "note_content": "【請填寫本週重點攻略與提示】"
+        "note_title": "💡 拆解詞綴邏輯，譯出語境的動態：",
+        "note_content": "「單字只是零件，核心在於透過前綴與語氣轉折，將族語中立體的情境畫面，重組成通順的中文脈絡。」"
     }
 }
 

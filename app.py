@@ -118,7 +118,7 @@ WEEK_DRIVE_IDS = {
     },
     "第六週": {
         "title": "寫作/族語翻譯",
-        "file_id": "【請填寫教材的Google Drive File ID】", 
+        "file_id": "1h02FwdFbAZOHBWHMS9mt-pTHRTUW7FVA", 
         "audio_id": "",
         "audio_id_1": "",
         "audio_id_2": "",

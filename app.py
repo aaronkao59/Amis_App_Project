@@ -140,7 +140,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "", 
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSftdEziEw7lRjugR5sXrLTAIXRoqtrCCC9dQ2fnfKTZpW3XzQ/viewform?usp=publish-editor", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第七週】口語表達_01",

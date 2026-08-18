@@ -244,7 +244,7 @@ with tab1:
                 is_match = re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or (block.strip() in expander_tags)
                 
                 if is_match:
-                    current_expander = st.expander(f"{block.strip()} 顯示/隱藏", expanded=False)
+                    current_expander = st.expander(block.strip(), expanded=False)
                     is_full_exam_block = ("完整題組" in block.strip())
                 else:
                     if current_expander:

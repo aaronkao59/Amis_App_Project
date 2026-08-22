@@ -39,7 +39,7 @@ def load_audio_from_drive(file_id):
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
 WEEK_DRIVE_IDS = {
-    "第一週 聽＆說": {
+    "第一週 （聽＆說）": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
         "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
@@ -51,7 +51,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 高級認證聽力破關公式：",
         "note_content": "高級聽力（特別是「對話推論題」與「長篇複句聽解」）考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。"
     },
-    "第二週": {
+    "第二週 （讀＆寫）": {
         "title": "閱讀/詞彙語意",
         "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
         "audio_id": "",
@@ -63,7 +63,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 閱讀與詞彙攻略：",
         "note_content": "本週重點在於理解上下文語意與詞根構詞後的語意變化。快速閱讀的核心技巧，先找出主詞與動詞的核心結構！" 
     },
-    "第三週": {
+    "第三週 （聽＆說）": {
         "title": "聽力/對話理解",
         "file_id": "1XDvuv_bA7XrUXksfPIAJh_eu-_T_uOs9", 
         "audio_id": "", 
@@ -82,7 +82,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 聽力與對話理解攻略：",
         "note_content": "本週重點在於掌握段落主旨與長句結構。遇到不認識的單字，嘗試從前後文推敲語意，不要停頓太久。"
     },
-    "第四週": {
+    "第四週 （讀＆寫）": {
         "title": "翻譯/翻譯實戰",
         "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", 
         "audio_id": "", 
@@ -94,7 +94,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 翻譯與結構攻略：",
         "note_content": "本週重點在於『信、達、雅』的轉換。拆解長句時，請善用格位標記 (ko, to, no) 來釐清字詞關係，保持句法清晰。熟記sapi-、saka-等前綴詞的翻法"
     },
-    "第五週": {
+    "第五週 （聽＆說）": {
         "title": "聽力/對話理解",
         "file_id": "1ZPiNTHyPyUo-wDzA7KMt_2RMwGfvGQ5R", 
         "audio_id": "",
@@ -116,7 +116,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 對話推論聽力攻略：",
         "note_content": "高級聽力考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。關鍵往往藏在說話者的情緒起伏與首尾句中。"
     },
-    "第六週": {
+    "第六週 （讀＆寫）": {
         "title": "寫作/族語翻譯",
         "file_id": "1h02FwdFbAZOHBWHMS9mt-pTHRTUW7FVA", 
         "audio_id": "",
@@ -133,7 +133,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 先定動詞焦點，再尋格位核心：",
         "note_content": "「跳脫主謂賓的直翻慣性，從族語的「焦點系統」與「格位標記」出發，才能精準還原句子的真正主體。」"
     },
-    "第七週": {
+    "第七週 （聽＆說）": {
         "title": "口說/口語表達",
         "file_id": "1VHdaumAxuRSepgwD8UeOSUV31Dl2Z5z3", 
         "audio_id": "",
@@ -150,7 +150,7 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 口語表達的物理與神經重建：",
         "note_content": "請徹底銷毀腦中『先想中文、再翻族語』的雙層延遲路徑。強迫大腦神經直接將目標意圖綁定阿美語的『動詞焦點』與『格位標記』，依靠肌肉記憶完成聲波釋放，實現無阻力直出。"
     },
-    "第八週": {
+    "第八週 （聽＆說）": {
         "title": "口說/口語表達",
         "file_id": "1jBi8jAqiLcWZGdc2jSqJdNKyc_Ote1Y6", 
         "audio_id": "",
@@ -167,8 +167,8 @@ WEEK_DRIVE_IDS = {
         "note_title": "💡 口語表達的物理與神經重建：",
         "note_content": "請徹底銷毀腦中『先想中文、再翻族語』的雙層延遲路徑。強迫大腦神經直接將目標意圖綁定阿美語的『動詞焦點』與『格位標記』，依靠肌肉記憶完成聲波釋放，實現無阻力直出。"
     },
-    "第九週": {
-        "title": "口說/口語表達(情境短文)",
+    "第九週 （聽＆說）": {
+        "title": "口說/口語表達",
         "file_id": "19fSR85JKTZNKBp3G_NHs6Hm_WOY7vr6M", 
         "audio_id": "",
         "audio_id_1": "",

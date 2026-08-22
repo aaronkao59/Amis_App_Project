@@ -228,7 +228,10 @@ with tab1:
         st.info("💡 點擊「📅 選擇複習週次」按鈕，選取週次以顯示教材內容。")
     else:
         current_week_info = WEEK_DRIVE_IDS[selected_week]
-        st.header(f"📘 {current_week_info['title']}")
+        st.markdown(
+    f"<div style='font-size: 30px; font-weight: bold; margin-bottom: 1rem; color: #31333F;'>📘 {current_week_info['title']}</div>", 
+    unsafe_allow_html=True
+)
         
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])

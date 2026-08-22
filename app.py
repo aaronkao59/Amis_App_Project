@@ -39,7 +39,7 @@ def load_audio_from_drive(file_id):
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
 WEEK_DRIVE_IDS = {
-    "第一週": {
+    "第一週 聽＆說": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
         "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 

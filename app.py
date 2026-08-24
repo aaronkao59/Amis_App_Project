@@ -10,27 +10,61 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 🎯 遠端讀取 Google Drive 文件的函數 ---
+# --- 🎯 遠端讀取 Google Drive 文件的函數 (通用安全防禦與多重協議清洗) ---
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_amis_drive_content(file_id):
-    if not file_id: return ""
-    download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
+    if not file_id:
+        return ""
+    
+    # 協議 1: Google Docs 原生純文字匯出協議
+    docs_export_url = f"https://docs.google.com/document/d/{file_id}/export?format=txt"
+    # 協議 2: 一般二進位/純文字檔案直連下載協議
+    direct_download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    session = requests.Session()
+    
     try:
-        response = requests.get(download_url)
+        # 優先嘗試 Google Docs TXT 匯出端點
+        response = session.get(docs_export_url, headers=headers, timeout=12)
+        
+        # 若非 Google Docs 或回傳 HTML 網頁，自動降級走直連下載協議
+        if response.status_code != 200 or "<!DOCTYPE html>" in response.text or "<html" in response.text:
+            response = session.get(direct_download_url, headers=headers, timeout=12)
+            
         if response.status_code == 200:
-            return response.text
+            content = response.text
+            
+            # 防腐層 (Anti-Corruption Layer)：攔截 Google 系統 HTML 錯誤頁與 CSS 污染
+            if "<!DOCTYPE html>" in content or "<html" in content or "letter-spacing:" in content:
+                # 剔除 CSS 樣式、JavaScript 與 HTML 標籤
+                clean_text = re.sub(r'<style.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
+                clean_text = re.sub(r'<script.*?</script>', '', clean_text, flags=re.DOTALL | re.IGNORECASE)
+                clean_text = re.sub(r'<[^>]+>', '', clean_text)
+                
+                # 若清理後仍殘留 CSS 語法特徵，啟動安全熔斷提示
+                if "{" in clean_text and "}" in clean_text and ":" in clean_text:
+                    return "⚠️ 【雲端教材讀取異常】此週次檔案權限未公開，或屬於受保護的 Google 雲端格式。請確認該檔案共用設定已開啟為「知道連結的任何人皆可檢視」。"
+                
+                return clean_text.strip()
+                
+            return content
         else:
-            return "⚠️ 雲端連線失敗，請檢查 Google Drive 檔案的 File ID 或共用權限。"
+            return f"⚠️ 雲端連線失敗 (HTTP {response.status_code})，請檢查 Google Drive 檔案 File ID 或共用權限。"
     except Exception as e:
         return f"🚨 發生錯誤：{str(e)}"
 
 # --- 🎯 遠端下載 Google Drive 音訊二進位檔的函數 ---
 @st.cache_data(show_spinner=False)
 def load_audio_from_drive(file_id):
-    if not file_id: return None
+    if not file_id: 
+        return None
     download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
     try:
-        response = requests.get(download_url)
+        response = requests.get(download_url, timeout=15)
         if response.status_code == 200:
             return response.content
     except Exception:
@@ -187,7 +221,6 @@ WEEK_DRIVE_IDS = {
 }
 
 # --- 前端視覺渲染層 ---
-# 🚀 優化：強制設定為台北時間 (UTC+8) 避免雲端伺服器時差問題
 taipei_tz = datetime.timezone(datetime.timedelta(hours=8))
 exam_date = datetime.date(2026, 12, 5) 
 today = datetime.datetime.now(taipei_tz).date()
@@ -229,9 +262,9 @@ with tab1:
     else:
         current_week_info = WEEK_DRIVE_IDS[selected_week]
         st.markdown(
-    f"<div style='font-size: 30px; font-weight: bold; margin-bottom: 1rem; color: #31333F;'>📘 {current_week_info['title']}</div>", 
-    unsafe_allow_html=True
-)
+            f"<div style='font-size: 30px; font-weight: bold; margin-bottom: 1rem; color: #31333F;'>📘 {current_week_info['title']}</div>", 
+            unsafe_allow_html=True
+        )
         
         with st.spinner(f"🔄 正在實時安全同步 Google Drive 【{selected_week}】教材與音訊..."):
             lecture_content = get_amis_drive_content(current_week_info["file_id"])
@@ -260,7 +293,8 @@ with tab1:
             current_expander = None
             
             for block in blocks:
-                if not block.strip(): continue
+                if not block.strip(): 
+                    continue
                 
                 is_match = re.match(r'【對話\s*t\d+-\d+-\d+】', block.strip()) or (block.strip() in expander_tags)
                 

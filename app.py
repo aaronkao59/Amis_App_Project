@@ -10,63 +10,79 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 🎯 遠端讀取 Google Drive 文件的函數 (通用安全防禦與多重協議清洗) ---
+# --- 🎯 遠端讀取 Google Drive 文件的函數 (防禦性解析與登入頁熔斷) ---
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_amis_drive_content(file_id):
     if not file_id:
         return ""
     
-    # 協議 1: Google Docs 原生純文字匯出協議
-    docs_export_url = f"https://docs.google.com/document/d/{file_id}/export?format=txt"
-    # 協議 2: 一般二進位/純文字檔案直連下載協議
-    direct_download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
-    
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/plain,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
     }
     
     session = requests.Session()
     
-    try:
-        # 優先嘗試 Google Docs TXT 匯出端點
-        response = session.get(docs_export_url, headers=headers, timeout=12)
-        
-        # 若非 Google Docs 或回傳 HTML 網頁，自動降級走直連下載協議
-        if response.status_code != 200 or "<!DOCTYPE html>" in response.text or "<html" in response.text:
-            response = session.get(direct_download_url, headers=headers, timeout=12)
+    # 協議候選清單：Google Docs 純文字匯出 -> uc 直接下載 -> 備用端點
+    url_candidates = [
+        f"https://docs.google.com/document/d/{file_id}/export?format=txt",
+        f"https://drive.google.com/uc?export=download&id={file_id}",
+        f"https://docs.google.com/uc?export=download&id={file_id}"
+    ]
+    
+    # Google 系統登入頁與 CSS 特徵標記
+    login_markers = [
+        "Sign-in", "Sign into continue", "accounts.google.com", 
+        "ServiceLogin", "Guest mode", "letter-spacing:", 
+        "Afrikaans", "Cymraeg", "Dansk", "HelpPrivacyTerms",
+        "BqKGqe", "VfPpkd", "jskylb", "CanvasText"
+    ]
+    
+    for url in url_candidates:
+        try:
+            response = session.get(url, headers=headers, timeout=10, allow_redirects=True)
+            if response.status_code == 200:
+                content = response.text
+                
+                # 判定是否回傳了登入頁或包含 CSS 雜訊
+                is_html_login = any(marker in content for marker in login_markers)
+                is_html_page = ("<!DOCTYPE html>" in content or "<html" in content)
+                
+                # 若為純文字教材且非登入網頁，直接輸出
+                if not is_html_login and not is_html_page:
+                    return content.strip()
+                
+                # 若為 HTML 頁面且非登入頁，嘗試清洗 HTML 標籤
+                if is_html_page and not is_html_login:
+                    clean_text = re.sub(r'<style.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
+                    clean_text = re.sub(r'<script.*?</script>', '', clean_text, flags=re.DOTALL | re.IGNORECASE)
+                    clean_text = re.sub(r'<[^>]+>', '', clean_text)
+                    if len(clean_text.strip()) > 50 and not any(marker in clean_text for marker in login_markers):
+                        return clean_text.strip()
+        except Exception:
+            continue
             
-        if response.status_code == 200:
-            content = response.text
-            
-            # 防腐層 (Anti-Corruption Layer)：攔截 Google 系統 HTML 錯誤頁與 CSS 污染
-            if "<!DOCTYPE html>" in content or "<html" in content or "letter-spacing:" in content:
-                # 剔除 CSS 樣式、JavaScript 與 HTML 標籤
-                clean_text = re.sub(r'<style.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
-                clean_text = re.sub(r'<script.*?</script>', '', clean_text, flags=re.DOTALL | re.IGNORECASE)
-                clean_text = re.sub(r'<[^>]+>', '', clean_text)
-                
-                # 若清理後仍殘留 CSS 語法特徵，啟動安全熔斷提示
-                if "{" in clean_text and "}" in clean_text and ":" in clean_text:
-                    return "⚠️ 【雲端教材讀取異常】此週次檔案權限未公開，或屬於受保護的 Google 雲端格式。請確認該檔案共用設定已開啟為「知道連結的任何人皆可檢視」。"
-                
-                return clean_text.strip()
-                
-            return content
-        else:
-            return f"⚠️ 雲端連線失敗 (HTTP {response.status_code})，請檢查 Google Drive 檔案 File ID 或共用權限。"
-    except Exception as e:
-        return f"🚨 發生錯誤：{str(e)}"
+    # 熔斷提示：防止任何 CSS 或登入字串外洩至畫面
+    return (
+        f"⚠️ **【雲端教材讀取異常】**\n\n"
+        f"檔案 ID (`{file_id}`) 權限目前未公開，Google 判定為私密檔案並導向了登入畫面。\n\n"
+        f"**請至 Google 雲端硬碟執行：**\n"
+        f"1. 找到 `Amis_Advanced_Exam_...` 母資料夾。\n"
+        f"2. 點選 **「共用」**。\n"
+        f"3. 將「一般存取權」由 **「限制」** 改為 **「知道連結的任何人」**（檢視者）。"
+    )
 
 # --- 🎯 遠端下載 Google Drive 音訊二進位檔的函數 ---
 @st.cache_data(show_spinner=False)
 def load_audio_from_drive(file_id):
     if not file_id: 
         return None
-    download_url = f"https://docs.google.com/uc?export=download&id={file_id}"
+    download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
     try:
         response = requests.get(download_url, timeout=15)
-        if response.status_code == 200:
-            return response.content
+        if response.status_code == 200 and len(response.content) > 1000:
+            if b"<!DOCTYPE html>" not in response.content[:100] and b"<html" not in response.content[:100]:
+                return response.content
     except Exception:
         return None
     return None
@@ -274,7 +290,7 @@ with tab1:
                 if key.startswith("audio_id") and file_id: 
                     audio_cache[key] = load_audio_from_drive(file_id)
         
-        if lecture_content and "⚠️" not in lecture_content and "🚨" not in lecture_content:
+        if lecture_content and not lecture_content.startswith("⚠️") and not lecture_content.startswith("🚨"):
             expander_tags = [
                 "【對話推論完整題組】", "【附加題組問答】", "【第二週課程內容】", 
                 "【第三週線上課程】", "【作業-表單01 答案解析】", 
@@ -328,7 +344,7 @@ with tab1:
                     else:
                         st.markdown(block, unsafe_allow_html=True)
         else:
-            st.markdown(lecture_content, unsafe_allow_html=True)
+            st.markdown(lecture_content)
         
         st.divider()
         st.markdown("### 🎯 記事")

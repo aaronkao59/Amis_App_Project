@@ -264,8 +264,8 @@ components.html(
                 return;
             }
             
-            // 精準計算剩餘天數，台北時間一過 24:00 自動推進
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            // 修正：改用 Math.ceil (無條件進位)，確保包含當天的日曆天數
+            const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
             badge.innerHTML = "倒數" + days + "天";
         }
 

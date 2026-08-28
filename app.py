@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import re
 import datetime
+import streamlit.components.v1 as components
 
 # --- 頁面系統設定 ---
 st.set_page_config(
@@ -236,24 +237,46 @@ WEEK_DRIVE_IDS = {
     }
 }
 
-# --- 前端視覺渲染層 ---
-taipei_tz = datetime.timezone(datetime.timedelta(hours=8))
-exam_date = datetime.date(2026, 12, 5) 
-today = datetime.datetime.now(taipei_tz).date()
-days_left = (exam_date - today).days
-countdown_text = f"倒數{days_left}天" if days_left > 0 else "考試進行中"
+# --- 前端視覺渲染層 (運算卸載至 Client-Side) ---
+components.html(
+    """
+    <div style='display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 0.5rem; font-family: sans-serif;'>
+        <div style='display: flex; flex-direction: column; gap: 4px; min-width: 280px;'>
+            <h1 style='margin: 0; padding: 0; font-size: 1.8rem; line-height: 1.2; color: #31333F;'>🎓 高級認證班</h1>
+            <span style='color: #888888; font-size: 1.05rem; font-weight: 500; margin-left: 2.6rem;'>海岸、馬蘭阿美語</span>
+        </div>
+        <div id="countdown-badge" style='border: 2px solid #1E88E5; color: #1E88E5; font-weight: bold; font-size: 1.4rem; padding: 4px 16px; border-radius: 12px; white-space: nowrap;'>
+            計算中...
+        </div>
+    </div>
 
-st.markdown(f"""
-<div style='display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 0.5rem;'>
-    <div style='display: flex; flex-direction: column; gap: 4px; min-width: 280px;'>
-        <h1 style='margin: 0; padding: 0; font-size: 1.8rem; line-height: 1.2;'>🎓 高級認證班</h1>
-        <span style='color: #888888; font-size: 1.05rem; font-weight: 500; margin-left: 2.6rem;'>海岸、馬蘭阿美語</span>
-    </div>
-    <div style='border: 2px solid #1E88E5; color: #1E88E5; font-weight: bold; font-size: 1.4rem; padding: 4px 16px; border-radius: 12px; white-space: nowrap;'>
-        {countdown_text}
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    <script>
+        function updateTimer() {
+            // 強制鎖定台北時間 (UTC+8) 的午夜 12 點作為基準點
+            const targetDate = new Date('2026-12-05T00:00:00+08:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const badge = document.getElementById('countdown-badge');
+            
+            if (distance <= 0) {
+                badge.innerHTML = "考試進行中";
+                return;
+            }
+            
+            // 精準計算剩餘天數，台北時間一過 24:00 自動推進
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            badge.innerHTML = "倒數" + days + "天";
+        }
+
+        // 初始化執行
+        updateTimer();
+        // 每 60 秒 (60000 毫秒) 重新校準一次畫面，完全不消耗 Python 後端效能
+        setInterval(updateTimer, 60000);
+    </script>
+    """,
+    height=80
+)
 
 st.divider()
 

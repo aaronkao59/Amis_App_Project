@@ -236,7 +236,7 @@ WEEK_DRIVE_IDS = {
         "note_content": "核心概念（Concept Sentence）： 「阿美語的「詞根」只是一個靜態的語意粘土，必須藉由「詞綴」這具動能引擎的剛性裝配，才能決定動作的流向（主動、被動、使役），並強制主導全句格位（主格與作格）天平的重力位移。」"
     },
     "第十週 （複習）": {
-        "title": "一～九週重點複習",
+        "title": "第一～九週重點複習",
         "file_id": "1udXUgOPl5i5-ghMD72Jl3D71n7MGdauX", 
         "audio_id": "",
         "audio_id_1": "",

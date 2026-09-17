@@ -251,6 +251,40 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "「2分鐘速記大綱」不是要把整篇講稿寫出來，而是要在極短時間內建立大腦的「思考導航儀」",
         "note_title": "💡 阿美語的構詞力學：詞根與動能引擎",
         "note_content": "核心概念（Concept Sentence）： 「阿美語的「詞根」只是一個靜態的語意粘土，必須藉由「詞綴」這具動能引擎的剛性裝配，才能決定動作的流向（主動、被動、使役），並強制主導全句格位（主格與作格）天平的重力位移。」"
+    },
+    "第十一週 （語法結構）": {
+        "title": "阿美族語語法構詞",
+        "file_id": "1cRbUeHDf4bx9l7vSnJUhCo9tRlBIHZEm", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": "", 
+        "form_url_2": "", 
+        "form_url_3": "",
+        "form_btn_1_label": "🎯 【第十ㄧ週】課後練習",
+        "form_btn_2_label": "",
+        "form_btn_3_label": "",
+        "instruction_text": "",
+        "note_title": "💡 阿美語的的瞬間解碼：「詞根構詞法」與「焦點系統」",
+        "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
+    },
+    "第十二週 （讀＆寫）": {
+        "title": "寫作/族語翻譯",
+        "file_id": "1o-b-sjriklsx_2jtiv8-jDSMb4d89Xoc", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": "", 
+        "form_url_2": "", 
+        "form_url_3": "",
+        "form_btn_1_label": "🎯 【第十二週】課後練習",
+        "form_btn_2_label": "",
+        "form_btn_3_label": "",
+        "instruction_text": "",
+        "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
+        "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
     }
 }
 
@@ -341,6 +375,7 @@ with tab1:
                 "【第八週線上課程】","【口語表達練習技巧】","【第八週表單測驗-對話推論】",
                 "【第九週線上課程】","【2分鐘大綱速記】","【語境、語態與時貌：範例～dipot】","【現代公共機構的稱呼】","【表單練習-W9_2分鐘速記_01】",
                 "【語法結構】",
+                "【阿美族語語法構詞】","【寫作/族語翻譯】",
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'

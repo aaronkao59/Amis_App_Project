@@ -285,6 +285,23 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "",
         "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
+    },
+    "第十三週 （讀＆寫）": {
+        "title": "寫作/中文翻族語",
+        "file_id": "1X3122pWtmtvutPf7t9WdnExlj6IesOfc", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": "", 
+        "form_url_2": "", 
+        "form_url_3": "",
+        "form_btn_1_label": "🎯 【第十三週】課後練習",
+        "form_btn_2_label": "",
+        "form_btn_3_label": "",
+        "instruction_text": "",
+        "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
+        "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
     }
 }
 
@@ -376,6 +393,7 @@ with tab1:
                 "【第九週線上課程】","【2分鐘大綱速記】","【語境、語態與時貌：範例～dipot】","【現代公共機構的稱呼】","【表單練習-W9_2分鐘速記_01】",
                 "【語法結構】",
                 "【阿美族語語法構詞】","【寫作/族語翻譯】",
+                "【寫作/中翻族語】",
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'

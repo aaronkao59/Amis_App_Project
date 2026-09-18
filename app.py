@@ -293,13 +293,13 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "", 
+        "form_url": "https://docs.google.com/forms/d/e/1FAIpQLSdTBkj_Wp7AzqtporPCosjCySavSXXhhk8Oth3XMt9JuH_R9Q/viewform?usp=publish-editor", 
         "form_url_2": "", 
         "form_url_3": "",
-        "form_btn_1_label": "🎯 【第十三週】課後練習",
+        "form_btn_1_label": "🎯 【第十三週】段落翻譯/中翻阿美",
         "form_btn_2_label": "",
         "form_btn_3_label": "",
-        "instruction_text": "",
+        "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
         "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
     }

@@ -304,7 +304,7 @@ WEEK_DRIVE_IDS = {
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
     },
     "第十四週 （讀＆寫）": {
-        "title": "文章閱讀/族語翻阿美",
+        "title": "文章閱讀/族語翻中文",
         "file_id": "10RCVMz2tMKsYCW7BJr6z5k19xepQFV40", 
         "audio_id": "",
         "audio_id_1": "",
@@ -314,6 +314,23 @@ WEEK_DRIVE_IDS = {
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第十四週】課後練習",
+        "form_btn_2_label": "",
+        "form_btn_3_label": "",
+        "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
+        "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
+        "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
+    },
+    "第十五週 （讀＆寫）": {
+        "title": "閱讀/族語翻中文",
+        "file_id": "1em76hSKnXww4Jn-0bpuP99zJkCm0rLMa", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": "", 
+        "form_url_2": "", 
+        "form_url_3": "",
+        "form_btn_1_label": "🎯 【第十五週】課後練習",
         "form_btn_2_label": "",
         "form_btn_3_label": "",
         "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
@@ -411,6 +428,7 @@ with tab1:
                 "【語法結構】",
                 "【阿美族語語法構詞】","【寫作/族語翻譯】",
                 "【寫作/中翻族語_01】","【寫作/中翻族語_02】","【寫作/中翻族語_03】",
+                "【寫作/族語翻中】",
                 "【寫作/族語翻中】",
             ]
             

@@ -330,7 +330,7 @@ WEEK_DRIVE_IDS = {
         "form_url": "https://forms.gle/NaPtbvaGUqdpznDYA", 
         "form_url_2": "https://forms.gle/vZ3v7eaB6J3nreyv8", 
         "form_url_3": "https://forms.gle/uYmrXx3qxqkSSx7c7",
-        "form_url_4": "https://forms.gle/BU6QhdY4SGqDwhCk7",
+        "form_url_4": "https://forms.gle/SMdbxdd61CFWxUsa8",
         "form_btn_1_label": "🎯 閱讀測驗 練習01",
         "form_btn_2_label": "🎯 閱讀測驗 練習02",
         "form_btn_3_label": "🎯 閱讀測驗 練習03",
@@ -547,6 +547,10 @@ with tab3:
         if current_week_info.get("form_url_3"):
             btn_label_3 = current_week_info.get("form_btn_3_label", f"🚀 【{selected_week_t3}】 練習表單03")
             st.link_button(label=btn_label_3, url=current_week_info["form_url_3"], type="primary", use_container_width=True)
+
+        if current_week_info.get("form_url_4"):
+            btn_label_4 = current_week_info.get("form_btn_4_label", f"🚀 【{selected_week_t3}】 練習表單04")
+            st.link_button(label=btn_label_4, url=current_week_info["form_url_4"], type="primary", use_container_width=True)
         
         instruction = current_week_info.get("instruction_text", "請依循表單內的指示完成測驗。")
         

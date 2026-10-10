@@ -340,6 +340,27 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
         "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
+    },
+    "第十六週 （聽＆說）": {
+        "title": "聽力/對話理解",
+        "file_id": "1cOb0f6ykUpbgsLv9RU5zIe4UvYgdqUyk", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": "", 
+        "form_url_2": "", 
+        "form_url_3": "",
+        "form_url_4": "",
+        "form_url_5": "",
+        "form_btn_1_label": "🎯 閱讀測驗 練習01",
+        "form_btn_2_label": "🎯 閱讀測驗 練習02",
+        "form_btn_3_label": "🎯 閱讀測驗 練習03",
+        "form_btn_4_label": "🎯 閱讀測驗 練習04",
+        "form_btn_5_label": "🎯 閱讀測驗 練習05",
+        "instruction_text": "聆聽對話音檔時若遇到生詞切勿慌張卡頓，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意骨架。接著請善用語氣轉折進行邏輯推敲。",
+        "note_title": "💡 對話推論聽力攻略：",
+        "note_content": "高級聽力考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。關鍵往往藏在說話者的情緒起伏與首尾句中。"
     }
 }
 

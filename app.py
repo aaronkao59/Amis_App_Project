@@ -342,7 +342,7 @@ WEEK_DRIVE_IDS = {
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
     },
     "第十六週 （聽＆說）": {
-        "title": "聽力/對話理解",
+        "title": "聽力",
         "file_id": "1cOb0f6ykUpbgsLv9RU5zIe4UvYgdqUyk", 
         "audio_id": "",
         "audio_id_1": "",
@@ -455,6 +455,7 @@ with tab1:
                 "【寫作/中翻族語_01】","【寫作/中翻族語_02】","【寫作/中翻族語_03】",
                 "【寫作/族語翻中】",
                 "【寫作/族語翻中】",
+                "【聽力/對話理解】",
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'

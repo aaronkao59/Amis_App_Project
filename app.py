@@ -331,10 +331,12 @@ WEEK_DRIVE_IDS = {
         "form_url_2": "https://forms.gle/vZ3v7eaB6J3nreyv8", 
         "form_url_3": "https://forms.gle/uYmrXx3qxqkSSx7c7",
         "form_url_4": "https://forms.gle/SMdbxdd61CFWxUsa8",
+        "form_url_4": "https://forms.gle/djm66WHVCsURrHzP8",
         "form_btn_1_label": "🎯 閱讀測驗 練習01",
         "form_btn_2_label": "🎯 閱讀測驗 練習02",
         "form_btn_3_label": "🎯 閱讀測驗 練習03",
         "form_btn_4_label": "🎯 閱讀測驗 練習04",
+        "form_btn_4_label": "🎯 閱讀測驗 練習05",
         "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
         "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
@@ -551,6 +553,10 @@ with tab3:
         if current_week_info.get("form_url_4"):
             btn_label_4 = current_week_info.get("form_btn_4_label", f"🚀 【{selected_week_t3}】 練習表單04")
             st.link_button(label=btn_label_4, url=current_week_info["form_url_4"], type="primary", use_container_width=True)
+
+        if current_week_info.get("form_url_5"):
+            btn_label_5 = current_week_info.get("form_btn_5_label", f"🚀 【{selected_week_t3}】 練習表單05")
+            st.link_button(label=btn_label_5, url=current_week_info["form_url_5"], type="primary", use_container_width=True)
         
         instruction = current_week_info.get("instruction_text", "請依循表單內的指示完成測驗。")
         

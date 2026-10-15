@@ -38,7 +38,7 @@ def display_formatted_markdown(text):
             formatted_lines.append(line)
             continue
         
-        # 3. 【關鍵修復】：如果該行是空行，絕對保持空行，不加任何空白！
+        # 3. 如果該行是空行，絕對保持空行，不加任何空白！
         if not line.strip():
             formatted_lines.append("")
             continue
@@ -70,7 +70,7 @@ def get_amis_drive_content(file_id):
     
     session = requests.Session()
     
-    # 修正：移除錯誤的 [url](url) 格式，恢復標準 Python 字串
+    # 徹底清除 Markdown 括號，還原為純淨網址
     url_candidates = [
         f"[https://docs.google.com/document/d/](https://docs.google.com/document/d/){file_id}/export?format=txt",
         f"[https://drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}",
@@ -114,7 +114,7 @@ def get_amis_drive_content(file_id):
         f"⚠️ **【雲端教材讀取異常】**\n\n"
         f"檔案 ID (`{file_id}`) 權限目前未公開，Google 判定為私密檔案並導向了登入畫面。\n\n"
         f"**請至 Google 雲端硬碟執行：**\n"
-        f"1. 找到 `Amis_Advanced_Exam_...` 母資料夾。\n"
+        f"1. 找到母資料夾。\n"
         f"2. 點選 **「共用」**。\n"
         f"3. 將「一般存取權」由 **「限制」** 改為 **「知道連結的任何人」**（檢視者）。"
     )
@@ -124,7 +124,7 @@ def get_amis_drive_content(file_id):
 def load_audio_from_drive(file_id):
     if not file_id: 
         return None
-    # 修正：移除錯誤的格式
+    # 徹底清除 Markdown 括號，還原為純淨網址
     download_url = f"[https://drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}"
     try:
         response = requests.get(download_url, timeout=15)
@@ -136,7 +136,7 @@ def load_audio_from_drive(file_id):
     return None
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 修正：所有表單網址恢復為標準字串
+# 徹底清除 1 到 16 週所有 form_url 的 Markdown 括號
 WEEK_DRIVE_IDS = {
     "第一週 （聽＆說）": {
         "title": "聽力/對話推論",

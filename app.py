@@ -375,7 +375,7 @@ WEEK_DRIVE_IDS = {
     },
     "第十六週 （聽＆說）": {
         "title": "聽力",
-        "file_id": "https://drive.google.com/file/d/1cOb0f6ykUpbgsLv9RU5zIe4UvYgdqUyk/view?usp=sharing", 
+        "file_id": "1cOb0f6ykUpbgsLv9RU5zIe4UvYgdqUyk", 
         "audio_id": "",
         "audio_id_1": "",
         "audio_id_2": "",

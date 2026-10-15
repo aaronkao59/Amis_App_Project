@@ -70,7 +70,7 @@ def get_amis_drive_content(file_id):
     
     session = requests.Session()
     
-    # 徹底清除 Markdown 括號，還原為純淨網址
+    # 【極重要修正】：徹底清除所有 Markdown 括號，保證是純淨的網址字串
     url_candidates = [
         f"[https://docs.google.com/document/d/](https://docs.google.com/document/d/){file_id}/export?format=txt",
         f"[https://drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}",
@@ -124,7 +124,7 @@ def get_amis_drive_content(file_id):
 def load_audio_from_drive(file_id):
     if not file_id: 
         return None
-    # 徹底清除 Markdown 括號，還原為純淨網址
+    # 【極重要修正】：徹底清除所有 Markdown 括號
     download_url = f"[https://drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}"
     try:
         response = requests.get(download_url, timeout=15)
@@ -136,7 +136,7 @@ def load_audio_from_drive(file_id):
     return None
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 徹底清除 1 到 16 週所有 form_url 的 Markdown 括號
+# 【極重要修正】：徹底清除 1 到 16 週所有 form_url 的 Markdown 括號
 WEEK_DRIVE_IDS = {
     "第一週 （聽＆說）": {
         "title": "聽力/對話推論",

@@ -11,6 +11,17 @@ st.set_page_config(
     layout="wide"
 )
 
+# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 ---
+def display_formatted_markdown(text):
+    """
+    將文本中的一般換行符號，全自動替換為 Markdown 支援的強制換行格式
+    確保原本編輯器中的換行能夠忠實呈現在 App 上
+    """
+    if not isinstance(text, str):
+        return
+    formatted_text = text.replace('\n', '  \n')
+    st.markdown(formatted_text, unsafe_allow_html=True)
+
 # --- 🎯 遠端讀取 Google Drive 文件的函數 (防禦性解析與登入頁熔斷) ---
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_amis_drive_content(file_id):
@@ -496,17 +507,21 @@ with tab1:
                                     else:
                                         st.error(f"⚠️ 音檔 {audio_num} 載入失敗或未設定對應的 ID")
                                 else:
-                                    st.markdown(sub, unsafe_allow_html=True)
+                                    # 🟢 修正點：使用自訂函數處理一般內文
+                                    display_formatted_markdown(sub)
                     else:
-                        st.markdown(block, unsafe_allow_html=True)
+                        # 🟢 修正點：使用自訂函數處理未被 expander 包覆的文字
+                        display_formatted_markdown(block)
         else:
-            st.markdown(lecture_content)
+            # 🟢 修正點：直接顯示未分割的整篇教材文字
+            display_formatted_markdown(lecture_content)
         
         st.divider()
         st.markdown("### 🎯 記事")
         note_title = current_week_info.get("note_title", "💡 學習重點：")
         note_content = current_week_info.get("note_content", "請持續累積實力，完成本週進度！")
         
+        # 這裡保留原本的 st.markdown，因為是純 HTML 區塊
         st.markdown(f"""
         <div style='background-color: #F0F7FF; padding: 18px; border-radius: 10px; border-left: 6px solid #1E88E5;'>
             <b style='color: #1E88E5; font-size: 18px;'>{note_title}</b><br>

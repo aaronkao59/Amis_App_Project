@@ -70,11 +70,11 @@ def get_amis_drive_content(file_id):
     
     session = requests.Session()
     
-    # 【極重要修正】：徹底清除所有 Markdown 括號，保證是純淨的網址字串
+    # 【終極防禦】：將網址字串切斷，防止編輯器自動轉成 Markdown 連結
     url_candidates = [
-        f"[https://docs.google.com/document/d/](https://docs.google.com/document/d/){file_id}/export?format=txt",
-        f"[https://drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}",
-        f"[https://docs.google.com/uc?export=download&id=](https://docs.google.com/uc?export=download&id=){file_id}"
+        "https://" + f"[docs.google.com/document/d/](https://docs.google.com/document/d/){file_id}/export?format=txt",
+        "https://" + f"[drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}",
+        "https://" + f"[docs.google.com/uc?export=download&id=](https://docs.google.com/uc?export=download&id=){file_id}"
     ]
     
     # Google 系統登入頁與 CSS 特徵標記
@@ -124,8 +124,8 @@ def get_amis_drive_content(file_id):
 def load_audio_from_drive(file_id):
     if not file_id: 
         return None
-    # 【極重要修正】：徹底清除所有 Markdown 括號
-    download_url = f"[https://drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}"
+    # 【終極防禦】：將網址字串切斷
+    download_url = "https://" + f"[drive.google.com/uc?export=download&id=](https://drive.google.com/uc?export=download&id=){file_id}"
     try:
         response = requests.get(download_url, timeout=15)
         if response.status_code == 200 and len(response.content) > 1000:
@@ -136,15 +136,15 @@ def load_audio_from_drive(file_id):
     return None
 
 # --- 🗺️ 雲端硬碟每週教材與表單對照表 ---
-# 【極重要修正】：徹底清除 1 到 16 週所有 form_url 的 Markdown 括號
+# 【終極防禦】：所有 form_url 皆以 "https://" + "..." 形式切斷撰寫
 WEEK_DRIVE_IDS = {
     "第一週 （聽＆說）": {
         "title": "聽力/對話推論",
         "file_id": "1luzDIy5k-sG7M5tO7IDuUZOG4m12c9jr",
         "audio_id": "1rRF0jGJHEOavDy3CDHy8lf965hZSG-1u", 
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog](https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog)",
-        "form_url_2": "[https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205](https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205)",
-        "form_url_3": "[https://forms.gle/qtRzxtMX5rD42KhA6](https://forms.gle/qtRzxtMX5rD42KhA6)",
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog](https://docs.google.com/forms/d/e/1FAIpQLSeKMrPYPPebwlHI_36Hed_gzr6dpit-vH6eqZZmsHOJuhX8fg/viewform?usp=dialog)",
+        "form_url_2": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205](https://docs.google.com/forms/d/e/1FAIpQLSeikQXV34jH_7wT102SAkwTTCnadH_UoCkp4WOAJOFjX3ZSqw/viewform?usp=sharing&ouid=112324184864900621205)",
+        "form_url_3": "https://" + "forms.gle/qtRzxtMX5rD42KhA6",
         "form_btn_1_label": "🎯 【第一週】 練習表單01",
         "instruction_text": "若要閱讀題組的族語文字，可在 Google 表單內點選「音檔」連結，聆聽音檔的頁面中，打開「註解」即可。建議盡可能答完題再看",
         "note_title": "💡 高級認證聽力破關公式：",
@@ -154,7 +154,7 @@ WEEK_DRIVE_IDS = {
         "title": "閱讀/詞彙語意",
         "file_id": "1eAgUnx0deSaq1ACX1KIYuKGSw4xWelkX",
         "audio_id": "",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205](https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205)",
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205](https://docs.google.com/forms/d/e/1FAIpQLSdaDrTXKvbbZq7GzTUJIt7dQC9dtcIqL2BLW-7zxPy7RoQUnQ/viewform?usp=sharing&ouid=112324184864900621205)",
         "form_url_2": "", 
         "form_url_3": "", 
         "form_btn_1_label": "🎯 開啟 【第二週】 閱讀與詞彙測驗01", 
@@ -173,8 +173,8 @@ WEEK_DRIVE_IDS = {
         "audio_id_5": "1PRAeIheoQKJaZNzSJ8LtKQGRR5zQ1MqN",
         "audio_id_6": "1tQ4Gesc0-BeBFTklSM0icbbt_d8BS6RF",
         "audio_id_7": "1xXvtEKQiH0ZNgfdQsQpQzOlpkZ6T3EJc",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header)",
-        "form_url_2": "[https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header)",
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSeJVgmWL26WjLF6ebskonhVOoHHnrasM4EI681ZWPtCZgOLPg/viewform?usp=header)",
+        "form_url_2": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSf2MXBPVNHdOj2Z_noNJHHQC_bMKQ_zLLY_IunvEOLlOTEgMg/viewform?usp=header)",
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第三週】 聽力/短文推論01 (馬蘭)",
         "instruction_text": "「聆聽短文時遇到生詞，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意架構。善用語氣轉折與上下文的語境線索來邏輯推敲。」",
@@ -185,7 +185,7 @@ WEEK_DRIVE_IDS = {
         "title": "翻譯/翻譯實戰",
         "file_id": "13yq9AVE23hW8jg7XdPqjM69_j1hLAkvJ", 
         "audio_id": "", 
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSetYYyakMpvmh5LSX0vIe2vJr87Ldpgqs6m2mh1GSi1WuY8Lg/viewform?usp=header)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第四週】 翻譯實戰測驗01",
@@ -205,7 +205,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_6": "1bPyDmk63np-hix72BxY1p5FHGn5v-fNh",
         "audio_id_7": "1ppiiajo6iRBWgoy8MEFTplyRungeikRD",
         "audio_id_8": "1zrDlceOjq297SB4B3uFgKWz2C8vzGjix",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSeHyWSA6oB4aUd9yMSnYvIu2hVh8g9quY8K8F7CgxkNfs66TQ/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSeHyWSA6oB4aUd9yMSnYvIu2hVh8g9quY8K8F7CgxkNfs66TQ/viewform?usp=header)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSeHyWSA6oB4aUd9yMSnYvIu2hVh8g9quY8K8F7CgxkNfs66TQ/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSeHyWSA6oB4aUd9yMSnYvIu2hVh8g9quY8K8F7CgxkNfs66TQ/viewform?usp=header)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 W5L1聽力-對話理解",
@@ -222,7 +222,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSe1ufpeCJc6UyriK0u3W5DrmCoHXV8I97lj9YmYg5e1lEaRHg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSe1ufpeCJc6UyriK0u3W5DrmCoHXV8I97lj9YmYg5e1lEaRHg/viewform?usp=header)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSe1ufpeCJc6UyriK0u3W5DrmCoHXV8I97lj9YmYg5e1lEaRHg/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSe1ufpeCJc6UyriK0u3W5DrmCoHXV8I97lj9YmYg5e1lEaRHg/viewform?usp=header)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第六週】族語翻譯PC_01",
@@ -239,7 +239,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSftdEziEw7lRjugR5sXrLTAIXRoqtrCCC9dQ2fnfKTZpW3XzQ/viewform?usp=publish-editor](https://docs.google.com/forms/d/e/1FAIpQLSftdEziEw7lRjugR5sXrLTAIXRoqtrCCC9dQ2fnfKTZpW3XzQ/viewform?usp=publish-editor)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSftdEziEw7lRjugR5sXrLTAIXRoqtrCCC9dQ2fnfKTZpW3XzQ/viewform?usp=publish-editor](https://docs.google.com/forms/d/e/1FAIpQLSftdEziEw7lRjugR5sXrLTAIXRoqtrCCC9dQ2fnfKTZpW3XzQ/viewform?usp=publish-editor)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第七週】口語表達_01",
@@ -256,7 +256,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSd7UJj-gW7rDdoWTPSOTT7mhcr-4c8En3foQWloLRjV4RbYbA/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSd7UJj-gW7rDdoWTPSOTT7mhcr-4c8En3foQWloLRjV4RbYbA/viewform?usp=header)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSd7UJj-gW7rDdoWTPSOTT7mhcr-4c8En3foQWloLRjV4RbYbA/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSd7UJj-gW7rDdoWTPSOTT7mhcr-4c8En3foQWloLRjV4RbYbA/viewform?usp=header)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第八週】對話推論",
@@ -273,7 +273,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSepd96-nettvp26_4yVw0cCkLuDvt4XdaM6wRl-FFJqLScXFQ/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSepd96-nettvp26_4yVw0cCkLuDvt4XdaM6wRl-FFJqLScXFQ/viewform?usp=header)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSepd96-nettvp26_4yVw0cCkLuDvt4XdaM6wRl-FFJqLScXFQ/viewform?usp=header](https://docs.google.com/forms/d/e/1FAIpQLSepd96-nettvp26_4yVw0cCkLuDvt4XdaM6wRl-FFJqLScXFQ/viewform?usp=header)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第九週】課後練習",
@@ -341,7 +341,7 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://docs.google.com/forms/d/e/1FAIpQLSdTBkj_Wp7AzqtporPCosjCySavSXXhhk8Oth3XMt9JuH_R9Q/viewform?usp=publish-editor](https://docs.google.com/forms/d/e/1FAIpQLSdTBkj_Wp7AzqtporPCosjCySavSXXhhk8Oth3XMt9JuH_R9Q/viewform?usp=publish-editor)", 
+        "form_url": "https://" + "[docs.google.com/forms/d/e/1FAIpQLSdTBkj_Wp7AzqtporPCosjCySavSXXhhk8Oth3XMt9JuH_R9Q/viewform?usp=publish-editor](https://docs.google.com/forms/d/e/1FAIpQLSdTBkj_Wp7AzqtporPCosjCySavSXXhhk8Oth3XMt9JuH_R9Q/viewform?usp=publish-editor)", 
         "form_url_2": "", 
         "form_url_3": "",
         "form_btn_1_label": "🎯 【第十三週】段落翻譯/中翻阿美",
@@ -375,11 +375,11 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://forms.gle/NaPtbvaGUqdpznDYA](https://forms.gle/NaPtbvaGUqdpznDYA)", 
-        "form_url_2": "[https://forms.gle/vZ3v7eaB6J3nreyv8](https://forms.gle/vZ3v7eaB6J3nreyv8)", 
-        "form_url_3": "[https://forms.gle/uYmrXx3qxqkSSx7c7](https://forms.gle/uYmrXx3qxqkSSx7c7)",
-        "form_url_4": "[https://forms.gle/p1sdEgUpZkYMqjE8A](https://forms.gle/p1sdEgUpZkYMqjE8A)",
-        "form_url_5": "[https://forms.gle/yXaAvH6ts1B25bZy5](https://forms.gle/yXaAvH6ts1B25bZy5)",
+        "form_url": "https://" + "forms.gle/NaPtbvaGUqdpznDYA", 
+        "form_url_2": "https://" + "forms.gle/vZ3v7eaB6J3nreyv8", 
+        "form_url_3": "https://" + "forms.gle/uYmrXx3qxqkSSx7c7",
+        "form_url_4": "https://" + "forms.gle/p1sdEgUpZkYMqjE8A",
+        "form_url_5": "https://" + "forms.gle/yXaAvH6ts1B25bZy5",
         "form_btn_1_label": "🎯 閱讀測驗 練習01",
         "form_btn_2_label": "🎯 閱讀測驗 練習02",
         "form_btn_3_label": "🎯 閱讀測驗 練習03",
@@ -396,11 +396,11 @@ WEEK_DRIVE_IDS = {
         "audio_id_1": "",
         "audio_id_2": "",
         "audio_id_3": "",
-        "form_url": "[https://forms.gle/EJuVJvHxHyoa4gzX9](https://forms.gle/EJuVJvHxHyoa4gzX9)", 
-        "form_url_2": "[https://forms.gle/9KtFfHTMiDBWpJso6](https://forms.gle/9KtFfHTMiDBWpJso6)", 
-        "form_url_3": "[https://forms.gle/eCnpTJyZk6dhRe4D7](https://forms.gle/eCnpTJyZk6dhRe4D7)",
-        "form_url_4": "[https://forms.gle/QBaGHmZBbYtYwNBc8](https://forms.gle/QBaGHmZBbYtYwNBc8)",
-        "form_url_5": "[https://forms.gle/Y4fa8uFagEQTdyCs6](https://forms.gle/Y4fa8uFagEQTdyCs6)",
+        "form_url": "https://" + "forms.gle/EJuVJvHxHyoa4gzX9", 
+        "form_url_2": "https://" + "forms.gle/9KtFfHTMiDBWpJso6", 
+        "form_url_3": "https://" + "forms.gle/eCnpTJyZk6dhRe4D7",
+        "form_url_4": "https://" + "forms.gle/QBaGHmZBbYtYwNBc8",
+        "form_url_5": "https://" + "forms.gle/Y4fa8uFagEQTdyCs6",
         "form_btn_1_label": "🎯 閱讀測驗 練習01",
         "form_btn_2_label": "🎯 閱讀測驗 練習02",
         "form_btn_3_label": "🎯 閱讀測驗 練習03",

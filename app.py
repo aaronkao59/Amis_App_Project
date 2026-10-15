@@ -12,27 +12,27 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (全相容智慧隔離版) ---
+# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (終極智慧區塊隔離版) ---
 def display_formatted_markdown(text):
-    """
-    1. 處理換行 (一般段落加兩個空白達成軟換行)。
-    2. 隔離區塊 (遇到清單、引用或表格轉換時，強迫插入空白行斷開，完美恢復 MD 編輯器視覺)。
-    3. 【全相容修復】支援更多種清單符號 (如 •, ○, ▪)，解決不同週次格式不一致的問題。
-    """
     if not isinstance(text, str):
         return
         
     lines = text.split('\n')
     formatted_lines = []
     in_code_block = False
+    in_table = False
     
     for i, line in enumerate(lines):
         stripped = line.strip()
         
         # 1. 程式碼區塊保護
         if stripped.startswith('```'):
+            if not in_code_block and formatted_lines and formatted_lines[-1] != "":
+                formatted_lines.append("")
             in_code_block = not in_code_block
             formatted_lines.append(line)
+            if not in_code_block:
+                formatted_lines.append("")
             continue
             
         if in_code_block:
@@ -44,57 +44,51 @@ def display_formatted_markdown(text):
             formatted_lines.append("")
             continue
             
-        # 3. 辨識當前行的結構特徵
+        # 3. 表格區塊保護
         is_table = '|' in stripped
-        # 【關鍵修復點】：擴充清單符號的辨識，加入 •, ○, ▪ 等常見的特殊字元
-        is_list = bool(re.match(r'^(\s*[-*+•○▪]\s+|\s*\d+\.\s+)', line))
-        is_heading = stripped.startswith('#')
+        if is_table:
+            if not in_table and formatted_lines and formatted_lines[-1] != "":
+                formatted_lines.append("")
+            formatted_lines.append(line)
+            in_table = True
+            continue
+        else:
+            if in_table:
+                formatted_lines.append("")
+                in_table = False
+
+        # 4. 辨識當前行的結構特徵
+        is_list = bool(re.match(r'^(\s*[-*+]\s+|\s*\d+\.\s+)', line))
         is_quote = stripped.startswith('>')
-        is_block = is_table or is_list or is_heading or is_quote
+        is_heading = stripped.startswith('#')
         
-        # 4. 辨識上一行的結構特徵，決定是否需要插入空白行來「隔離區塊」
-        if formatted_lines and formatted_lines[-1] != "":
-            prev_line = formatted_lines[-1]
-            prev_stripped = prev_line.strip()
+        # 錨點保護：這些段落開頭必須強制獨立
+        is_marker = any(stripped.startswith(m) for m in ['【中文翻譯】', '[詞彙與字骨解析]', '第一段', '第二段', '第三段', '第四段', '第五段'])
+        if is_marker and formatted_lines and formatted_lines[-1] != "":
+            formatted_lines.append("")
             
-            prev_is_table = '|' in prev_stripped
-            prev_is_list = bool(re.match(r'^(\s*[-*+•○▪]\s+|\s*\d+\.\s+)', prev_line))
-            prev_is_heading = prev_stripped.startswith('#')
-            prev_is_quote = prev_stripped.startswith('>')
-            prev_is_block = prev_is_table or prev_is_list or prev_is_heading or prev_is_quote
-
-            needs_break = False
-            
-            # 若發生「區塊」與「一般文字」的切換，強制斷開
-            if is_block and not prev_is_block:
-                needs_break = True
-            elif not is_block and prev_is_block:
-                needs_break = True
-            # 若都是區塊，但類型不同，也強制斷開
-            elif is_block and prev_is_block:
-                if is_table and not prev_is_table: needs_break = True
-                if not is_table and prev_is_table: needs_break = True
-                if is_list and not prev_is_list: needs_break = True
-                if not is_list and prev_is_list: needs_break = True
-                if is_heading or prev_is_heading: needs_break = True
-                if is_quote and not prev_is_quote: needs_break = True
-                if not is_quote and prev_is_quote: needs_break = True
-
-            # 插入救命的空白行
-            if needs_break:
+        # 5. 辨識上一行的結構特徵，執行「強制區塊隔離」
+        prev_line = lines[i-1] if i > 0 else ""
+        prev_stripped = prev_line.strip()
+        prev_is_list = bool(re.match(r'^(\s*[-*+]\s+|\s*\d+\.\s+)', prev_line))
+        prev_is_quote = prev_stripped.startswith('>')
+        
+        # 若上一行是清單或引用，但這一行是一般文字，強制插入空白行斷開！
+        if (prev_is_list or prev_is_quote) and not (is_list or is_quote or is_heading):
+            if formatted_lines and formatted_lines[-1] != "":
                 formatted_lines.append("")
 
-        # 5. 根據特徵輸出文字
-        if is_block:
+        # 6. 根據特徵輸出文字
+        if is_heading:
             formatted_lines.append(line)
         else:
-            # 一般段落：句尾加上兩個空白，達成完美軟換行
+            # 一般段落、清單與引用：句尾加上兩個空白，達成完美的 Markdown 軟換行
             formatted_lines.append(line.rstrip() + '  ')
             
     formatted_text = '\n'.join(formatted_lines)
     st.markdown(formatted_text, unsafe_allow_html=True)
 
-# --- 🛡️ 終極防禦：使用 Base64 編碼保護網域 ---
+# --- 🛡️ 終極防禦：使用 Base64 編碼保護網域，阻斷編輯器自動超連結 ---
 DOCS_BASE = base64.b64decode("aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20=").decode("utf-8")
 DRIVE_BASE = base64.b64decode("aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29t").decode("utf-8")
 FORMS_GLE = base64.b64decode("aHR0cHM6Ly9mb3Jtcy5nbGU=").decode("utf-8")

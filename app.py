@@ -12,8 +12,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (終極智慧區塊隔離版) ---
+# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 ---
 def display_formatted_markdown(text):
+    """
+    保護 Markdown 原始語法，並對一般段落執行軟換行。
+    """
     if not isinstance(text, str):
         return
         
@@ -22,7 +25,7 @@ def display_formatted_markdown(text):
     in_code_block = False
     in_table = False
     
-    for i, line in enumerate(lines):
+    for line in lines:
         stripped = line.strip()
         
         # 1. 程式碼區塊保護
@@ -42,11 +45,11 @@ def display_formatted_markdown(text):
         # 2. 原本的空行直接保留
         if not stripped:
             formatted_lines.append("")
+            in_table = False
             continue
             
-        # 3. 表格區塊保護
-        is_table = '|' in stripped
-        if is_table:
+        # 3. 表格區塊保護 (必須要有 | 符號才能構成表格)
+        if '|' in stripped:
             if not in_table and formatted_lines and formatted_lines[-1] != "":
                 formatted_lines.append("")
             formatted_lines.append(line)
@@ -57,32 +60,15 @@ def display_formatted_markdown(text):
                 formatted_lines.append("")
                 in_table = False
 
-        # 4. 辨識當前行的結構特徵
-        is_list = bool(re.match(r'^(\s*[-*+]\s+|\s*\d+\.\s+)', line))
+        # 4. 標題、清單、引用保護
+        is_list = bool(re.match(r'^(\s*[-*+•○▪]\s+|\s*\d+\.\s+)', line))
         is_quote = stripped.startswith('>')
         is_heading = stripped.startswith('#')
-        
-        # 錨點保護：這些段落開頭必須強制獨立
-        is_marker = any(stripped.startswith(m) for m in ['【中文翻譯】', '[詞彙與字骨解析]', '第一段', '第二段', '第三段', '第四段', '第五段'])
-        if is_marker and formatted_lines and formatted_lines[-1] != "":
-            formatted_lines.append("")
-            
-        # 5. 辨識上一行的結構特徵，執行「強制區塊隔離」
-        prev_line = lines[i-1] if i > 0 else ""
-        prev_stripped = prev_line.strip()
-        prev_is_list = bool(re.match(r'^(\s*[-*+]\s+|\s*\d+\.\s+)', prev_line))
-        prev_is_quote = prev_stripped.startswith('>')
-        
-        # 若上一行是清單或引用，但這一行是一般文字，強制插入空白行斷開！
-        if (prev_is_list or prev_is_quote) and not (is_list or is_quote or is_heading):
-            if formatted_lines and formatted_lines[-1] != "":
-                formatted_lines.append("")
 
-        # 6. 根據特徵輸出文字
-        if is_heading:
+        if is_heading or is_list or is_quote:
             formatted_lines.append(line)
         else:
-            # 一般段落、清單與引用：句尾加上兩個空白，達成完美的 Markdown 軟換行
+            # 一般段落：強制加入兩個空白達成軟換行
             formatted_lines.append(line.rstrip() + '  ')
             
     formatted_text = '\n'.join(formatted_lines)
@@ -93,7 +79,7 @@ DOCS_BASE = base64.b64decode("aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20=").decode("utf-8")
 DRIVE_BASE = base64.b64decode("aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29t").decode("utf-8")
 FORMS_GLE = base64.b64decode("aHR0cHM6Ly9mb3Jtcy5nbGU=").decode("utf-8")
 
-# --- 🎯 遠端讀取 Google Drive 文件的函數 ---
+# --- 🎯 遠端讀取 Google Drive 文件的函數 (抓取邏輯根本修復) ---
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_amis_drive_content(file_id):
     if not file_id:
@@ -106,9 +92,10 @@ def get_amis_drive_content(file_id):
     
     session = requests.Session()
     
+    # 【關鍵修復】：將直接下載 (uc?export=download) 移至首位，確保完美取得 .md 原檔語法
     url_candidates = [
-        f"{DOCS_BASE}/document/d/{file_id}/export?format=txt",
         f"{DRIVE_BASE}/uc?export=download&id={file_id}",
+        f"{DOCS_BASE}/document/d/{file_id}/export?format=txt",
         f"{DOCS_BASE}/uc?export=download&id={file_id}"
     ]
     
@@ -125,18 +112,16 @@ def get_amis_drive_content(file_id):
             if response.status_code == 200:
                 content = response.text
                 
-                is_html_login = any(marker in content for marker in login_markers)
-                is_html_page = ("<!DOCTYPE html>" in content or "<html" in content)
+                # 登入頁面判定
+                if any(marker in content for marker in login_markers):
+                    continue
                 
-                if not is_html_login and not is_html_page:
+                # 【關鍵修復】：如果抓到的是 HTML 網頁，直接丟棄換下一個網址，絕不進行破壞性字串刪除
+                is_html = "<!doctype html>" in content.lower() or "<html" in content.lower()
+                
+                if not is_html:
+                    # 只有確定是純淨的 Markdown 文字時，才回傳給前端渲染
                     return content.strip()
-                
-                if is_html_page and not is_html_login:
-                    clean_text = re.sub(r'<style.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
-                    clean_text = re.sub(r'<script.*?</script>', '', clean_text, flags=re.DOTALL | re.IGNORECASE)
-                    clean_text = re.sub(r'<[^>]+>', '', clean_text)
-                    if len(clean_text.strip()) > 50 and not any(marker in clean_text for marker in login_markers):
-                        return clean_text.strip()
         except Exception:
             continue
             

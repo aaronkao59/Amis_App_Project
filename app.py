@@ -12,50 +12,29 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (終極修復版) ---
+# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (終極 CSS 修復版) ---
 def display_formatted_markdown(text):
     """
     智慧型 Markdown 渲染器：
-    1. 自動將一般段落換行替換為強制的軟換行 (兩個空格)。
-    2. 保護程式碼、表格、清單、標題等區塊元素。
-    3. 絕對保護「空行」的純粹性，避免破壞 Markdown 的區塊辨識邏輯。
+    捨棄容易破壞語法的 Python 字串替換，改由最底層的 CSS 強制開啟「軟換行」。
+    這能 100% 保留 Markdown 的原生表格、標題與清單結構，同時讓一般段落正常斷行。
     """
     if not isinstance(text, str):
         return
-        
-    lines = text.split('\n')
-    formatted_lines = []
-    in_code_block = False
     
-    for line in lines:
-        if line.strip().startswith('```'):
-            in_code_block = not in_code_block
-            formatted_lines.append(line)
-            continue
-        
-        if in_code_block:
-            formatted_lines.append(line)
-            continue
-        
-        if not line.strip():
-            formatted_lines.append("")
-            continue
-        
-        stripped_line = line.strip()
-        if ('|' in line) or stripped_line.startswith(('#', '-', '*', '+', '>')) or re.match(r'^\d+\.', stripped_line):
-            formatted_lines.append(line)
-        else:
-            formatted_lines.append(line.rstrip() + '  ')
-            
-    formatted_text = '\n'.join(formatted_lines)
-    st.markdown(formatted_text, unsafe_allow_html=True)
-
+    # 注入 CSS：強制讓 Streamlit 的段落 (<p>) 支援單一換行符號 (等同軟換行效果)
+    st.markdown(
+        "<style>.stMarkdown p { white-space: pre-line; }</style>", 
+        unsafe_allow_html=True
+    )
+    
+    # 完全不竄改原文，直接交給官方引擎解析，表格絕對不會再被破壞
+    st.markdown(text, unsafe_allow_html=True)
 
 # --- 🛡️ 終極防禦：使用 Base64 編碼保護網域，徹底阻斷文字編輯器的「自動超連結」破壞 ---
-DOCS_BASE = base64.b64decode("aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20=").decode("utf-8")  # 解碼為 [https://docs.google.com](https://docs.google.com)
-DRIVE_BASE = base64.b64decode("aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29t").decode("utf-8") # 解碼為 [https://drive.google.com](https://drive.google.com)
-FORMS_GLE = base64.b64decode("aHR0cHM6Ly9mb3Jtcy5nbGU=").decode("utf-8")         # 解碼為 [https://forms.gle](https://forms.gle)
-
+DOCS_BASE = base64.b64decode("aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20=").decode("utf-8")
+DRIVE_BASE = base64.b64decode("aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29t").decode("utf-8")
+FORMS_GLE = base64.b64decode("aHR0cHM6Ly9mb3Jtcy5nbGU=").decode("utf-8")
 
 # --- 🎯 遠端讀取 Google Drive 文件的函數 (防禦性解析與登入頁熔斷) ---
 @st.cache_data(show_spinner=False, ttl=3600)

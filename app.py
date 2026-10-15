@@ -12,11 +12,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (智慧區塊隔離版) ---
+# --- 🎯 統一處理 Markdown 排版與 HTML 渲染的函數 (全相容智慧隔離版) ---
 def display_formatted_markdown(text):
     """
     1. 處理換行 (一般段落加兩個空白達成軟換行)。
     2. 隔離區塊 (遇到清單、引用或表格轉換時，強迫插入空白行斷開，完美恢復 MD 編輯器視覺)。
+    3. 【全相容修復】支援更多種清單符號 (如 •, ○, ▪)，解決不同週次格式不一致的問題。
     """
     if not isinstance(text, str):
         return
@@ -45,7 +46,8 @@ def display_formatted_markdown(text):
             
         # 3. 辨識當前行的結構特徵
         is_table = '|' in stripped
-        is_list = bool(re.match(r'^(\s*[-*+]\s+|\s*\d+\.\s+)', line))
+        # 【關鍵修復點】：擴充清單符號的辨識，加入 •, ○, ▪ 等常見的特殊字元
+        is_list = bool(re.match(r'^(\s*[-*+•○▪]\s+|\s*\d+\.\s+)', line))
         is_heading = stripped.startswith('#')
         is_quote = stripped.startswith('>')
         is_block = is_table or is_list or is_heading or is_quote
@@ -56,7 +58,7 @@ def display_formatted_markdown(text):
             prev_stripped = prev_line.strip()
             
             prev_is_table = '|' in prev_stripped
-            prev_is_list = bool(re.match(r'^(\s*[-*+]\s+|\s*\d+\.\s+)', prev_line))
+            prev_is_list = bool(re.match(r'^(\s*[-*+•○▪]\s+|\s*\d+\.\s+)', prev_line))
             prev_is_heading = prev_stripped.startswith('#')
             prev_is_quote = prev_stripped.startswith('>')
             prev_is_block = prev_is_table or prev_is_list or prev_is_heading or prev_is_quote

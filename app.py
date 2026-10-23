@@ -422,6 +422,27 @@ WEEK_DRIVE_IDS = {
         "instruction_text": "聆聽對話音檔時若遇到生詞切勿慌張卡頓，請專注聽取『動詞焦點』與『核心主詞』來建構整體的語意骨架。接著請善用語氣轉折進行邏輯推敲。",
         "note_title": "💡 對話推論聽力攻略：",
         "note_content": "高級聽力考的不是海量單字的記憶，而是對阿美語核心「焦點系統」、「時態」與「語境」的瞬間反射辨識。關鍵往往藏在說話者的情緒起伏與首尾句中。"
+    },
+    "第十七週 （讀＆寫）": {
+        "title": "寫作/中文翻族語",
+        "file_id": "1bEjVP2Z2cF2F4HlhXWNJvG3Pjy9EOKSi", 
+        "audio_id": "",
+        "audio_id_1": "",
+        "audio_id_2": "",
+        "audio_id_3": "",
+        "form_url": FORMS_GLE + "", 
+        "form_url_2": FORMS_GLE + "", 
+        "form_url_3": FORMS_GLE + "",
+        "form_url_4": FORMS_GLE + "",
+        "form_url_5": FORMS_GLE + "",
+        "form_btn_1_label": "🎯 族語翻中文 練習01",
+        "form_btn_2_label": "🎯 族語翻中文 練習02",
+        "form_btn_3_label": "",
+        "form_btn_4_label": "",
+        "form_btn_5_label": "",
+        "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
+        "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
+        "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"
     }
 }
 
@@ -524,6 +545,7 @@ with tab1:
                 "【寫作/族語翻中】",
                 "【寫作/族語翻中】",
                 "【聽力/對話理解】",
+                "【寫作/中文翻族語】",
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'

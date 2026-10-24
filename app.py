@@ -434,12 +434,10 @@ WEEK_DRIVE_IDS = {
         "form_url_2": FORMS_GLE + "https://forms.gle/9SL5PYRqAYL82Wtj8", 
         "form_url_3": FORMS_GLE + "https://forms.gle/HuVk49Xe7ATAd3JM8",
         "form_url_4": FORMS_GLE + "https://forms.gle/ckEKKVX2j9WbfRGt8",
-        "form_url_5": FORMS_GLE + "",
         "form_btn_1_label": "🎯 族語翻中文 練習01",
         "form_btn_2_label": "🎯 族語翻中文 練習02",
         "form_btn_3_label": "🎯 族語翻中文 練習03",
         "form_btn_4_label": "🎯 族語翻中文 練習04",
-        "form_btn_5_label": "",
         "instruction_text": "「若遇到難以對應的中文詞彙，思考其在阿美族生活實踐中的對應行為，用描述性或動詞化的方式表達，而非硬找對應的借詞。」",
         "note_title": "💡 阿美語的的瞬間解碼：「啟動 VSO 核心重組",
         "note_content": "核心概念（Concept Sentence）： 遇到長篇複句，第一步是抓出前置動詞（VSO 結構）裡的詞根，接著辨識詞綴帶來的引力流向，就能瞬間拆解長句骨架，剩下的詞彙量只是時間的自然累積。"

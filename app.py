@@ -483,9 +483,9 @@ WEEK_DRIVE_IDS = {
     "第二十週 （聽＆說）": {
         "title": "聽力/閱讀理解",
         "file_id": "1SPWDHqWTtjx5yX8eB3y8DbA2wUfURzZA", 
-        "audio_id": "1sEHdVzjnRDwevaSrb7lsrF4UQamdh2r1",
-        "audio_id_1": "",
-        "audio_id_2": "",
+        "audio_id": "",
+        "audio_id_1": "1sEHdVzjnRDwevaSrb7lsrF4UQamdh2r1",
+        "audio_id_2": "1BKrUwrf-GnN5KmiV50LoDslsH6AiUVXp",
         "audio_id_3": "",
         "audio_id_4": "",
         "audio_id_5": "",

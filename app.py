@@ -605,7 +605,7 @@ with tab1:
                 "【寫作/族語翻中】",
                 "【閱讀/短文理解】",
                 "【寫作/中文翻族語】",
-                "【聽力/閱讀理解】",
+                "【第二十週線上課程】",
             ]
             
             pattern = r'(【對話\s*t\d+-\d+-\d+】|' + '|'.join([re.escape(tag) for tag in expander_tags]) + r')'
